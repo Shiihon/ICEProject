@@ -1,0 +1,66 @@
+@startuml
+class Main
+class Game
+class Room
+class Player
+class TextUI
+class Puzzles
+class InteractiveObjcets
+class Items
+
+
+
+Main *--Game
+Game *-- Room
+Game *-- Player
+Room *-- Puzzles
+Room *-- InteractiveObjcets
+Game *-- TextUI
+Room *-- Items
+
+
+
+Main : + Static void main (String[] args)
+
+Game : - TextUI
+Game : - Player player
+Game : - List <Room> rooms
+Game : + setup()
+Game : + startMenu()
+Game : + runGameLoop()
+
+
+Room : - List <Puzzles> puzzle
+Room : - List <InteractiveObjcets> intObj
+Room : - List <Item> items
+Room : - String Story
+Room : + enter()
+
+Player : - String playerName
+Player : - List <Items> inventory
+
+TextUI : - Scanner scanner
+TextUI : + void displayMessage()
+TextUI : + getInput()
+TextUI : + getChoice()
+
+
+Puzzles : - String name
+
+InteractiveObjcets : - String type
+InteractiveObjcets : - String name
+
+Items : - String itemType
+Items : - String name??
+
+
+
+
+
+
+
+
+
+
+
+@enduml
