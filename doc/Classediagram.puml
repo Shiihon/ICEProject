@@ -43,6 +43,7 @@ TextUI : - Scanner scanner
 TextUI : + void displayMessage()
 TextUI : + getInput()
 TextUI : + getChoice()
+TextUI : + displayErrorMessage()
 
 
 Puzzles : - String name
