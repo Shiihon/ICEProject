@@ -4,4 +4,11 @@ public class InteractiveObject {
     private String name;
 
 
+    public InteractiveObject(String type, String name )
+    {
+        this.type = type;
+        this.name = name;
+    }
+
+
 }
