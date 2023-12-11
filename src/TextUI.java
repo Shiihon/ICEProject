@@ -10,23 +10,57 @@ public final class TextUI {
     }
 
     public static String getInput(String msg) {
-        return null;
+        System.out.print(msg);
+        return scanner.nextLine();
     }
 
     public static int getChoice(String msg, List<?> options) {
-        return -1;
+        displayOptions(options);
+        String input = getInput(msg + " [Number]: ");
+
+        if (input.equalsIgnoreCase("Q") || input.equalsIgnoreCase("Quit")) {
+            return -1;
+        }
+
+        try {
+            int choice = Integer.parseInt(input.trim()) - 1;
+
+            if (choice >= 0 && choice < options.size()) {
+                return choice;
+            }
+        } catch (NumberFormatException ignored) {
+        }
+
+        displayErrorMessage("Please choose a valid option.");
+        return getChoice(msg, options);
     }
 
     public static String getChoiceYN(String msg) {
-        return null;
+        String input = getInput(msg + " [Y/N]: ");
+
+        if (input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("Yes")) {
+            return "Y";
+        } else if (input.equalsIgnoreCase("N") || input.equalsIgnoreCase("No")) {
+            return "N";
+        } else if (input.equalsIgnoreCase("Q") || input.equalsIgnoreCase("Quit")) {
+            return "Q";
+        } else {
+            displayErrorMessage("Please choose a valid option.");
+            return getChoiceYN(msg);
+        }
     }
 
     public static void displayOptions(List<?> options) {
+        int count = 1;
 
+        for (Object option : options) {
+            displayMessage("[" + count + "] " + option);
+            count++;
+        }
     }
 
     public static void displayMessage(String msg) {
-
+        System.out.println(msg);
     }
 
     public static void displayErrorMessage(String errorMsg) {
