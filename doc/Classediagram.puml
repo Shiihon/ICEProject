@@ -1,67 +1,70 @@
 @startuml
 class Main
 class Game
-class Room
+interface Room
+abstract class ARoom
+class StartRoom
 class Player
-class TextUI
-class Puzzles
-class InteractiveObjcets
-class Items
+class InteractiveObject
 
+
+Main : + static void main (String[] args)
 
 
 Main *--Game
 Game *-- Room
 Game *-- Player
-Room *-- Puzzles
-Room *-- InteractiveObjcets
 Game *-- TextUI
-Room *-- Items
+Room *-- ARoom
+ARoom *-- StartRoom
+ARoom *-- InteractiveObject
 
 
-
-Main : + Static void main (String[] args)
-
-Game : - TextUI
-Game : - Player player
 Game : - List <Room> rooms
-Game : + setup()
-Game : + startMenu()
-Game : + runGameLoop()
+Game : - Player player
+Game : - TextUI textUI
+
+Game : + void setup()
+Game : + void startMenu()
+Game : + void runGameLoop()
 
 
-Room : - List <Puzzles> puzzle
-Room : - List <InteractiveObjcets> intObj
-Room : - List <Item> items
-Room : - String Story
-Room : + enter()
+Room : + void enter()
+Room : + void exit()
+
+
+ARoom : - String Story
+ARoom : - List <Puzzle> puzzle
+ARoom : - List <InteractiveObject> interactiveObjects
+ARoom : - TextUI textUI
+
+
+StartRoom : - boolean candleLit
+StartRoom : - boolean bookshelfPuzzleSolved
+StartRoom : - boolean paintingPuzzleSolved
+
+StartRoom : + void enter()
+StartRoom : + void exit()
+StartRoom : + void runRoomLoop()
+StartRoom : - void startBookshelfPuzzle()
+StartRoom : - void startPaintingPuzzle()
+
 
 Player : - String playerName
-Player : - List <Items> inventory
+
+Player : + String getName()
+
 
 TextUI : - Scanner scanner
-TextUI : + void displayMessage()
-TextUI : + getInput()
-TextUI : + getChoice()
-TextUI : + displayErrorMessage()
+
+TextUI : + String getInput(String msg)
+TextUI : + int getChoice(String msg, List<?> options)
+TextUI : + void displayErrorMessage(String errorMsg)
+TextUI : + void displayMessage(String msg)
+TextUI : + void displayOptions(List<?> options)
 
 
-Puzzles : - String name
-
-InteractiveObjcets : - String type
-InteractiveObjcets : - String name
-
-Items : - String itemType
-Items : - String name??
-
-
-
-
-
-
-
-
-
-
+InteractiveObject : - String type
+InteractiveObject : - String name
 
 @enduml
