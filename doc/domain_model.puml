@@ -1,0 +1,36 @@
+@startuml
+
+object Game
+object StartMenu
+object GameMaster
+object Player
+object Room
+object Inventory
+object Hint
+object Puzzle
+object InteractObject
+object Item
+object Story
+object Theme
+
+Game *-- GameMaster
+Game *-- StartMenu
+Game *-- Player
+Game *-- Room
+
+GameMaster *-- Hint
+
+Hint --o Puzzle
+
+Room *-- Puzzle
+Room *-- InteractObject
+Room o-- Item
+Room o-- Story
+
+Player *-- Inventory
+
+Inventory o-- Item
+
+Story *-- Theme
+
+@enduml
