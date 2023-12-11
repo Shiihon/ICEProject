@@ -30,6 +30,8 @@ public final class TextUI {
     }
 
     public static void displayErrorMessage(String errorMsg) {
-
+        String RED = "\u001B[31m";
+        String RESET = "\u001B[0m";
+        System.out.println(RED + errorMsg + RESET);
     }
 }
