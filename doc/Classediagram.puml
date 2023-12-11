@@ -13,16 +13,17 @@ Main : + static void main (String[] args)
 
 Main *--Game
 Game *-- Room
-Game *-- Player
 Game *-- TextUI
+Game *-- Player
 Room <|-- ARoom
 ARoom <|-- StartRoom
 ARoom *-- InteractiveObject
 
+ARoom *-- TextUI
+
 
 Game : - List <Room> rooms
 Game : - Player player
-Game : - TextUI textUI
 
 Game : + void setup()
 Game : + void startMenu()
@@ -35,7 +36,6 @@ Room : + void exit()
 
 ARoom : # String Story
 ARoom : # List <InteractiveObject> interactiveObjects
-ARoom : # TextUI textUI
 
 
 StartRoom : - boolean candleLit
