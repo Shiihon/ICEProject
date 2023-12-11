@@ -1,14 +1,10 @@
 public class InteractiveObject {
 
-    private String type;
-    private String name;
+    private final String type;
+    private final String name;
 
-
-    public InteractiveObject(String type, String name )
-    {
+    public InteractiveObject(String type, String name) {
         this.type = type;
         this.name = name;
     }
-
-
 }

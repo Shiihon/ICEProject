@@ -1,18 +1,24 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    protected List <Room> rooms;
-    protected Player player;
 
-    void setup(){
+    private final List <Room> rooms;
+    private Player player;
+
+    public Game() {
+        this.rooms = new ArrayList<>();
+    }
+
+    public void setup(){
 
     }
 
-    void startMenu(){
+    public void startMenu(){
 
     }
 
-    void runGameLoop(){
+    public void runGameLoop(){
 
     }
 }
