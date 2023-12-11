@@ -15,8 +15,8 @@ Main *--Game
 Game *-- Room
 Game *-- Player
 Game *-- TextUI
-Room *-- ARoom
-ARoom *-- StartRoom
+Room <|-- ARoom
+ARoom <|-- StartRoom
 ARoom *-- InteractiveObject
 
 
@@ -33,10 +33,10 @@ Room : + void enter()
 Room : + void exit()
 
 
-ARoom : - String Story
-ARoom : - List <Puzzle> puzzle
-ARoom : - List <InteractiveObject> interactiveObjects
-ARoom : - TextUI textUI
+ARoom : # String Story
+ARoom : # List <Puzzle> puzzle
+ARoom : # List <InteractiveObject> interactiveObjects
+ARoom : # TextUI textUI
 
 
 StartRoom : - boolean candleLit
