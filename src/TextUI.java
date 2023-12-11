@@ -1,35 +1,35 @@
 import java.util.List;
 import java.util.Scanner;
 
-public class TextUI {
+public final class TextUI {
 
-    private final Scanner scanner;
+    private static final Scanner scanner;
 
-    public TextUI() {
+    static {
         scanner = new Scanner(System.in);
     }
 
-    public String getInput(String msg) {
+    public static String getInput(String msg) {
         return null;
     }
 
-    public int getChoice(String msg, List<?> options) {
+    public static int getChoice(String msg, List<?> options) {
         return -1;
     }
 
-    public String getChoiceYN(String msg) {
+    public static String getChoiceYN(String msg) {
         return null;
     }
 
-    public void displayOptions(List<?> options) {
+    public static void displayOptions(List<?> options) {
 
     }
 
-    public void displayMessage(String msg) {
+    public static void displayMessage(String msg) {
 
     }
 
-    public void displayErrorMessage(String errorMsg) {
+    public static void displayErrorMessage(String errorMsg) {
 
     }
 }
