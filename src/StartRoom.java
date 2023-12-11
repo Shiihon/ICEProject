@@ -8,6 +8,7 @@ public class StartRoom extends ARoom {
         super();
     }
 
+    @Override
     public void enter() {
 
     }
@@ -23,7 +24,9 @@ public class StartRoom extends ARoom {
     private void startPaintingPuzzle() {
 
     }
-    private void exit() {
+
+    @Override
+    public void exit() {
 
     }
 }
