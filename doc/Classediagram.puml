@@ -34,7 +34,6 @@ Room : + void exit()
 
 
 ARoom : # String Story
-ARoom : # List <Puzzle> puzzle
 ARoom : # List <InteractiveObject> interactiveObjects
 ARoom : # TextUI textUI
 
