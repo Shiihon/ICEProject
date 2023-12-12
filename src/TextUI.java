@@ -10,17 +10,14 @@ public final class TextUI {
     }
 
     public static String getInput(String msg) {
-        System.out.print(msg);
+        System.out.print(msg + " ");
         return scanner.nextLine();
     }
 
     public static int getChoice(String msg, List<?> options) {
         displayOptions(options);
-        String input = getInput(msg + " [Number]: ");
-
-        if (input.equalsIgnoreCase("Q") || input.equalsIgnoreCase("Quit")) {
-            return -1;
-        }
+        displayMessage();
+        String input = getInput(msg);
 
         try {
             int choice = Integer.parseInt(input.trim()) - 1;
@@ -36,14 +33,12 @@ public final class TextUI {
     }
 
     public static String getChoiceYN(String msg) {
-        String input = getInput(msg + " [Y/N]: ");
+        String input = getInput(msg + " [Y/N]:");
 
         if (input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("Yes")) {
             return "Y";
         } else if (input.equalsIgnoreCase("N") || input.equalsIgnoreCase("No")) {
             return "N";
-        } else if (input.equalsIgnoreCase("Q") || input.equalsIgnoreCase("Quit")) {
-            return "Q";
         } else {
             displayErrorMessage("Please choose a valid option.");
             return getChoiceYN(msg);
@@ -57,6 +52,10 @@ public final class TextUI {
             displayMessage("[" + count + "] " + option);
             count++;
         }
+    }
+
+    public static void displayMessage() {
+        displayMessage("");
     }
 
     public static void displayMessage(String msg) {
