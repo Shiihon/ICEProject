@@ -111,13 +111,13 @@ public class StartRoom extends ARoom {
 
         if (choice == options.indexOf("Smile")) {
             TextUI.displayMessage("You take Smile out the bookshelf. After 3 seconds, you hear a loud noise, the bookshelf starts moving. Another 10 sec goes by, the bookshelf has now moved 1meter to the left revealing a keypad");
-            List<String> Key = new ArrayList<>();
-            Key.add("NumberPad");
-            Key.add("Look around");
+            List<String> key = new ArrayList<>();
+            key.add("NumberPad");
+            key.add("Look around");
 
-            int input = TextUI.getChoice("What do you want to do", Key);
+            int input = TextUI.getChoice("What do you want to do", key);
 
-            if (input == Key.indexOf("NumberPad")) {
+            if (input == key.indexOf("NumberPad")) {
                 TextUI.displayMessage("You take a step closer to the number pad, there is number form 1-9 and a green button on it, with the word “confirm” on it. You see there are some options, but don’t really know what to do or what’s gonna happen. Or what will be if you press the wrong numbers, so you decide not to do anything right now and look around again.");
                 // Type on the keypad
             } else {
