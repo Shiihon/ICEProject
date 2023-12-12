@@ -1,6 +1,9 @@
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * A utility class used to communicate with and get input from the user
+ */
 public final class TextUI {
 
     private static final Scanner scanner;
@@ -9,11 +12,24 @@ public final class TextUI {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Get text input from the user while printing a small message
+     *
+     * @param msg The message to show the user (A small space will be added to the end of the message)
+     * @return The input from the user in the form of text
+     */
     public static String getInput(String msg) {
         System.out.print(msg + " ");
         return scanner.nextLine();
     }
 
+    /**
+     * Display a list of options to the user and return the index of what option the user chose
+     *
+     * @param msg     The message to show the user
+     * @param options The options displayed to the user
+     * @return The index of the choice the user picked in the range of 0 to options.size()-1
+     */
     public static int getChoice(String msg, List<?> options) {
         displayOptions(options);
         displayMessage();
@@ -32,6 +48,12 @@ public final class TextUI {
         return getChoice(msg, options);
     }
 
+    /**
+     * Ask the user a yes or no question and return their answer
+     *
+     * @param msg The message to show the user
+     * @return The users answer. "Y" for yes and "N" for no
+     */
     public static String getChoiceYN(String msg) {
         String input = getInput(msg + " [Y/N]:");
 
@@ -45,6 +67,11 @@ public final class TextUI {
         }
     }
 
+    /**
+     * Display a list of options to the user
+     *
+     * @param options The list of options that will be displayed to the user
+     */
     public static void displayOptions(List<?> options) {
         int count = 1;
 
@@ -54,14 +81,27 @@ public final class TextUI {
         }
     }
 
+    /**
+     * Display an empty message to the user
+     */
     public static void displayMessage() {
         displayMessage("");
     }
 
+    /**
+     * Display a message to the user
+     *
+     * @param msg The message to be displayed to the user
+     */
     public static void displayMessage(String msg) {
         System.out.println(msg);
     }
 
+    /**
+     * Display an error message to the user
+     *
+     * @param errorMsg The error message to be displayed to the user
+     */
     public static void displayErrorMessage(String errorMsg) {
         String RED = "\u001B[31m";
         String RESET = "\u001B[0m";
