@@ -23,6 +23,18 @@ public final class TextUI {
         return scanner.nextLine();
     }
 
+    public static int getNumericInput(String msg) {
+        String input = getInput(msg);
+
+        try {
+            return Integer.parseInt(input.trim());
+        } catch (NumberFormatException ignored) {
+            displayMessage();
+            displayErrorMessage("Please specify a numeric input.");
+            return getNumericInput(msg);
+        }
+    }
+
     /**
      * Display a list of options to the user and return the index of what option the user chose
      *
