@@ -4,8 +4,9 @@ import java.util.List;
 public class StartRoom extends ARoom {
 
     private boolean candleLit;
-    private boolean bookshelfPuzzleSolved;
+    private boolean hasBlanket;
     private boolean paintingPuzzleSolved;
+    private boolean riddleSolved;
 
     private boolean running;
 
@@ -100,8 +101,7 @@ public class StartRoom extends ARoom {
             return;
         }
 
-        TextUI.displayMessage("You see a lot of books: “It, Saw, American Psycho, Sinister”. At the top of the shelf there is a sign “Horror”. You quickly realize that all the books are old and new Horror movies and you ask yourself “Why”?\n" +
-                "Some of the books are very old and others new. There are some that catch your eye more than others. The Exorcist, Smile, The nun and Scream.");
+        TextUI.displayMessage("You see a lot of books: “It, Saw, American Psycho, Sinister”. At the top of the shelf there is a sign “Horror”. You quickly realize that all the books are old and new Horror movies and you ask yourself “Why”?\n" + "Some of the books are very old and others new. There are some that catch your eye more than others. The Exorcist, Smile, The nun and Scream.");
 
         TextUI.getInput("Press enter to continue...");
         List<String> options = new ArrayList<>();
@@ -119,27 +119,100 @@ public class StartRoom extends ARoom {
         int choice = TextUI.getChoice("What do you want to do?", options);
 
         if (choice == options.indexOf("Smile")) {
-            TextUI.displayMessage("You take Smile out the bookshelf. After 3 seconds, you hear a loud noise, the bookshelf starts moving. Another 10 sec goes by, the bookshelf has now moved 1meter to the left revealing a keypad");
-            List<String> key = new ArrayList<>();
-            key.add("NumberPad");
-            key.add("Look around");
-
-            int input = TextUI.getChoice("What do you want to do", key);
-
-            if (input == key.indexOf("NumberPad")) {
-                TextUI.displayMessage("You take a step closer to the number pad, there is number form 1-9 and a green button on it, with the word “confirm” on it. You see there are some options, but don’t really know what to do or what’s gonna happen. Or what will be if you press the wrong numbers, so you decide not to do anything right now and look around again.");
-                // Type on the keypad
-            } else {
-                TextUI.displayMessage("You take a Step back start looking around again");
+            guessRiddle();
+            if (riddleSolved) {
+                TextUI.displayMessage("You take Smile out the bookshelf. After 3 seconds, you hear a loud noise, the bookshelf starts moving. Another 10 sec goes by, the bookshelf has now moved 1meter to the left revealing a numberpad");
+                approachNumberpad();
+            } else if (choice != options.indexOf("Take a step back")) {
+                TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens. You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
+                approachBookshelf();
             }
-        } else if (choice != options.indexOf("Look around")) {
-            TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens. You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
-            approachBookshelf();
+        }
+    }
+
+    private void guessRiddle() {
+        TextUI.displayMessage("You flip through the pages and see a message: ");
+        TextUI.displayMessage("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I");
+
+        List<String> options = new ArrayList<>();
+        options.add("Try guessing riddle");
+        options.add("Take a step back");
+
+        int input = TextUI.getChoice("What do you want to do?", options);
+
+        if (input != options.indexOf("Take a step back")) {
+
+        }
+
+        guessRiddle(input, options);
+    }
+
+    private void guessRiddle(int input, List<String> options) {
+        if (input == options.indexOf("Try guessing riddle")) {
+            String answer = TextUI.getInput("Your guess: ");
+            if (answer.equalsIgnoreCase("fire")) {
+                riddleSolved = true;
+            } else {
+                TextUI.displayMessage("Nothings happens.....");
+                List<String> riddleOptions = new ArrayList<>();
+
+                riddleOptions.add("Try again");
+                riddleOptions.add("Take a step back");
+
+                int numberInput = TextUI.getChoice("What you want to do", riddleOptions);
+                if (numberInput == riddleOptions.indexOf("Try again")) {
+                    guessRiddle(input, options);
+                }
+            }
         }
     }
 
     private void approachPainting() {
 
+    }
+
+    private void approachNumberpad() {
+
+        TextUI.displayMessage("You take a step closer to the number pad, there is number form 1-9 and a green button on it, with the word “confirm” on it. You see there are some options, but don’t really know what to do or what’s gonna happen. Or what will be if you press the wrong numbers, so you decide not to do anything right now and look around again.\");");
+
+        TextUI.getInput("Press enter to continue...");
+
+        List<String> options = new ArrayList<>();
+        options.add("Use the numberpad");
+        options.add("Take a step back");
+
+        int input = TextUI.getChoice("What do you want to do", options);
+
+        interactNumberpad(input, options);
+
+
+    }
+
+    private void interactNumberpad(int input, List<String> options) {
+
+        if (input == options.indexOf("Use the numberpad")) {
+
+            int codeinput = TextUI.getNumericInput("Enter the code, then press enter....");
+
+            if (codeinput == 69420) {
+                TextUI.displayMessage("The green light is flashing and you hear a loud popping sound of a hiddem safe getting opened");
+                TextUI.getInput("Press enter to continue...");
+                TextUI.displayMessage("You investigate the safe and find an old blanket. It's very thick and warm, and could keep anyone happy should they e wrapped around it");
+                hasBlanket = true;
+
+            } else {
+                TextUI.displayMessage("Nothings happens.....");
+                List<String> numberpadOptions = new ArrayList<>();
+
+                numberpadOptions.add("Try again");
+                numberpadOptions.add("Take a step back");
+
+                int numberInput = TextUI.getChoice("What you want to do", numberpadOptions);
+                if (numberInput == numberpadOptions.indexOf("Try again")) {
+                    interactNumberpad(input, options);
+                }
+            }
+        }
     }
 
     @Override
