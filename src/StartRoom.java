@@ -38,8 +38,6 @@ public class StartRoom extends ARoom {
                 options.add("Approach the " + interactiveObject);
             }
 
-            options.add("Exit");
-
             int choice = TextUI.getChoice("What would you like to do?", options);
 
             switch (choice) {
@@ -68,7 +66,9 @@ public class StartRoom extends ARoom {
 
         switch (choice) {
             case 0:
+                TextUI.displayMessage();
                 TextUI.displayMessage("You lit the candle and can now see your surroundings better");
+                TextUI.getInput("Press Enter to continue...");
 
                 for (int i = interactiveObjects.size() - 1; i >= 0; i--) {
                     InteractiveObject interactiveObject = interactiveObjects.get(i);
@@ -82,7 +82,9 @@ public class StartRoom extends ARoom {
                 candleLit = true;
                 break;
             case 1:
+                TextUI.displayMessage();
                 TextUI.displayMessage("You step away from the table.");
+                TextUI.getInput("Press Enter to continue...");
                 break;
         }
     }
@@ -93,6 +95,8 @@ public class StartRoom extends ARoom {
 
         if (!candleLit) {
             TextUI.displayMessage("You see a lot of books on the shelf but you can't read and not even make out any of the titles.");
+
+            TextUI.getInput("Press Enter to continue...");
             return;
         }
 
@@ -126,6 +130,18 @@ public class StartRoom extends ARoom {
         } else if (choice != options.indexOf("Look around")) {
             TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens. You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
             approachBookshelf();
+        }
+    }
+
+    public static void wait(int ms)
+    {
+        try
+        {
+            Thread.sleep(ms);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
         }
     }
 

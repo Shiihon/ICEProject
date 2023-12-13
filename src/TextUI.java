@@ -44,6 +44,7 @@ public final class TextUI {
         } catch (NumberFormatException ignored) {
         }
 
+        displayMessage();
         displayErrorMessage("Please choose a valid option.");
         return getChoice(msg, options);
     }
@@ -62,6 +63,7 @@ public final class TextUI {
         } else if (input.equalsIgnoreCase("N") || input.equalsIgnoreCase("No")) {
             return "N";
         } else {
+            displayMessage();
             displayErrorMessage("Please choose a valid option.");
             return getChoiceYN(msg);
         }
