@@ -7,7 +7,6 @@ public class StartRoom extends ARoom {
     private boolean hasBlanket;
     private boolean paintingPuzzleSolved;
     private boolean riddleSolved;
-
     private boolean running;
 
     public StartRoom() {
@@ -121,18 +120,20 @@ public class StartRoom extends ARoom {
         if (choice == options.indexOf("Smile")) {
             guessRiddle();
             if (riddleSolved) {
-                TextUI.displayMessage("You take Smile out the bookshelf. After 3 seconds, you hear a loud noise, the bookshelf starts moving. Another 10 sec goes by, the bookshelf has now moved 1meter to the left revealing a numberpad");
+                TextUI.displayMessage("You say the word out loud, and you are suddenly startled with a loud noise!");
+                TextUI.displayMessage("The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad");
+                TextUI.getInput("Press enter to continue...");
                 approachNumberpad();
-            } else if (choice != options.indexOf("Take a step back")) {
-                TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens. You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
-                approachBookshelf();
             }
+        } else if (choice != options.indexOf("Take a step back")) {
+            TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens. You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
+            approachBookshelf();
         }
     }
 
     private void guessRiddle() {
         TextUI.displayMessage("You flip through the pages and see a message: ");
-        TextUI.displayMessage("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I");
+        TextUI.displayMessage("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
 
         List<String> options = new ArrayList<>();
         options.add("Try guessing riddle");
@@ -140,16 +141,15 @@ public class StartRoom extends ARoom {
 
         int input = TextUI.getChoice("What do you want to do?", options);
 
-        if (input != options.indexOf("Take a step back")) {
-
+        if (input == options.indexOf("Take a step back")) {
+            TextUI.displayMessage("You leave the book...");
         }
-
         guessRiddle(input, options);
     }
 
     private void guessRiddle(int input, List<String> options) {
         if (input == options.indexOf("Try guessing riddle")) {
-            String answer = TextUI.getInput("Your guess: ");
+            String answer = TextUI.getInput("Your guess: ").trim();
             if (answer.equalsIgnoreCase("fire")) {
                 riddleSolved = true;
             } else {
