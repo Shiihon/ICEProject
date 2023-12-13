@@ -93,19 +93,25 @@ public class StartRoom extends ARoom {
 
         if (!candleLit) {
             TextUI.displayMessage("You see a lot of books on the shelf but you can't read and not even make out any of the titles.");
+            TextUI.getInput("Press enter to continue...");
             return;
         }
 
-        TextUI.displayMessage("You see a lot of books: “IT, Saw, American Psycho, Sinister”. At the top of the shelf there is a sign “Horror”. You quickly realize that all the books are old and new Disney movies and you ask yourself “Why”?\n" +
+        TextUI.displayMessage("You see a lot of books: “It, Saw, American Psycho, Sinister”. At the top of the shelf there is a sign “Horror”. You quickly realize that all the books are old and new Horror movies and you ask yourself “Why”?\n" +
                 "Some of the books are very old and others new. There are some that catch your eye more than others. The Exorcist, Smile, The nun and Scream.");
 
+        TextUI.getInput("Press enter to continue...");
         List<String> options = new ArrayList<>();
 
         options.add("The Exorcist");
         options.add("Scream");
         options.add("The nun");
         options.add("Smile");
-        options.add("Look around");
+        options.add("It");
+        options.add("Saw");
+        options.add("American Psycho");
+        options.add("Sinister");
+        options.add("Take a step back");
 
         int choice = TextUI.getChoice("What do you want to do?", options);
 
