@@ -23,10 +23,9 @@ public class StartRoom extends ARoom {
         TextUI.displayMessage();
         TextUI.displayMessage();
         TextUI.displayMessage("""
-                You hear a loud noise and suddenly everything goes dark. You wake up feeling dizzy.
-                As you wake up you try to look around. It’s dark and you can’t really make out anything.
-                But you appear to be in an old house of some sorts. It appears you were teleported, somewhere, somehow.
-                You’re not quite sure where you are but one thing’s for sure.
+                You hear a loud noise and suddenly everything goes dark. You wake in a dark room feeling dizzy.
+                You can’t see much but you appear to be in an old house of some sorts.
+                It seems that you’ve been teleported, somewhere, somehow. You’re not quite sure where you are but one thing’s for sure.
                 It’s cold. Almost freezing.
                 """);
 
@@ -35,7 +34,7 @@ public class StartRoom extends ARoom {
         TextUI.displayMessage();
         TextUI.displayMessage("""
                 Suddenly you hear a voice coming from the room. It sounds like a little girl, crying.
-                
+                                
                 "So cold... it’s... so cold..."
                 """);
 
@@ -43,15 +42,14 @@ public class StartRoom extends ARoom {
 
         TextUI.displayMessage();
         TextUI.displayMessage("""
-                You get on your feet, your eyes are getting used to the dark but you still can’t make out any details.
-                You look around and try to orient yourself…
-                
-                You're in a big room filled with old furniture, paintings, and a faint smell of blood.
-                You see a table in the middle of the room with what looks to be a standing candle on it.
-                In the corner of the room is a large, tall rectangular object, a bookshelf maybe?
-                To your right, there’s something on the wall, paintings.
-                In the opposite end of the room you see a door
-                And in the right corner of the room, is what looks to be a... a... human, a girl? Or whatever it is, it’s crying.
+                You get on your feet, and try to look around in the dark.
+                The room is filled with old furniture and paintings… and a faint smell of blood.
+                                
+                In the middle of the room is a table with what looks to be a standing candle on it.
+                To your right, are some paintings on the wall but you can’t make out any details.
+                In the corner of the room you see a large, tall rectangular object, a bookshelf maybe?
+                At the opposite end of the room you see a… a human, a little girl? Or whatever it is. It’s crying.
+                Behind the little girl you see a door. A way out maybe.
                 """);
         TextUI.getInput("Press Enter to continue...");
 
@@ -64,23 +62,30 @@ public class StartRoom extends ARoom {
         while (running) {
             TextUI.displayMessage();
 
+            List<InteractiveObject> interactiveObjectList = new ArrayList<>(interactiveObjects.values());
             List<String> options = new ArrayList<>();
 
-            for (InteractiveObject interactiveObject : interactiveObjects.values()) {
+            for (InteractiveObject interactiveObject : interactiveObjectList) {
                 options.add("Approach the " + interactiveObject);
             }
 
             int choice = TextUI.getChoice("What would you like to do?", options);
 
-            switch (choice) {
-                case 0:
+            InteractiveObject interactiveObject = interactiveObjectList.get(choice);
+
+            switch (interactiveObject.getType()) {
+                case InteractiveType.BOOKSHELF:
+                    TextUI.displayMessage();
+                    TextUI.displayMessage("You begin to walk slowly towards the table, trying not to trip over anything on the floor.");
                     approachBookshelf();
                     break;
-                case 1:
+                case InteractiveType.WALL_PAINTINGS:
                     approachPainting();
                     break;
-                case 2:
+                case InteractiveType.TABLE_WITH_CANDLE:
                     approachTableCandle();
+                    break;
+                case InteractiveType.LITTLE_GIRL:
                     break;
             }
         }
@@ -88,7 +93,13 @@ public class StartRoom extends ARoom {
 
     private void approachTableCandle() {
         TextUI.displayMessage();
-        TextUI.displayMessage("You approach the table with an unlit candle on it.");
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You begin to walk slowly towards the table, trying not to trip over anything on the floor.
+                                
+                Coming to the table you see a small metal object next to the standing candle. A lighter.
+                It’s looks old but still functional.
+                """);
 
         List<String> options = new ArrayList<>();
         options.add("Light the candle.");
@@ -98,25 +109,27 @@ public class StartRoom extends ARoom {
 
         switch (choice) {
             case 0:
-                TextUI.displayMessage();
-                TextUI.displayMessage("You lit the candle and can now see your surroundings better");
-                TextUI.getInput("Press Enter to continue...");
-
                 interactiveObjects.remove(InteractiveType.TABLE_WITH_CANDLE);
                 candleLit = true;
+
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                        You light the candle and watch as it begins to light up the room.
+                        Suddenly you can see everything a little better.
+                        """);
+                TextUI.getInput("Press Enter to continue...");
                 break;
             case 1:
                 TextUI.displayMessage();
-                TextUI.displayMessage("You step away from the table.");
+                TextUI.displayMessage("""
+                        You step back from the table.
+                        """);
                 TextUI.getInput("Press Enter to continue...");
                 break;
         }
     }
 
     private void approachBookshelf() {
-        TextUI.displayMessage();
-        TextUI.displayMessage("You begin walking to the big bookshelf");
-
         if (!candleLit) {
             TextUI.displayMessage("You see a lot of books on the shelf but you can't read and not even make out any of the titles.");
 
