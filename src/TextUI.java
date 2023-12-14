@@ -26,7 +26,7 @@ public final class TextUI {
     /**
      * Get a numeric input from the user while printing a small message
      *
-     * @param msg  The message to show the user
+     * @param msg The message to show the user
      * @return The input from the user in the form of an int
      */
     public static int getNumericInput(String msg) {
@@ -35,8 +35,9 @@ public final class TextUI {
         try {
             return Integer.parseInt(input.trim());
         } catch (NumberFormatException ignored) {
-            displayMessage();
             displayErrorMessage("Please specify a numeric input.");
+            getInput("Press Enter to continue...");
+            displayMessage();
             return getNumericInput(msg);
         }
     }
@@ -62,8 +63,9 @@ public final class TextUI {
         } catch (NumberFormatException ignored) {
         }
 
-        displayMessage();
         displayErrorMessage("Please choose a valid option.");
+        getInput("Press Enter to continue...");
+        displayMessage();
         return getChoice(msg, options);
     }
 
@@ -81,8 +83,9 @@ public final class TextUI {
         } else if (input.equalsIgnoreCase("N") || input.equalsIgnoreCase("No")) {
             return "N";
         } else {
-            displayMessage();
             displayErrorMessage("Please choose a valid option.");
+            getInput("Press Enter to continue...");
+            displayMessage();
             return getChoiceYN(msg);
         }
     }
@@ -127,4 +130,19 @@ public final class TextUI {
         String RESET = "\u001B[0m";
         System.out.println(RED + errorMsg + RESET);
     }
+
+    /*
+    Clear the console.
+    Works only for Windows cmd and Linux
+     */
+    /*public static void clear() {
+        if (System.console() != null) {
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (IOException | InterruptedException | RuntimeException ignored) {
+            }
+        }
+        System.out.print("\033\143");
+        System.out.flush();
+    }*/
 }
