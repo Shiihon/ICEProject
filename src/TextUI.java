@@ -134,7 +134,8 @@ public final class TextUI {
     public static void displayRiddle(String riddle) {
         String ORANGE = "\u001B[38;5;208m";
         String RESET = "\u001B[0m";
-        System.out.println(ORANGE + riddle + RESET);
+        String styledText = riddle.replace("*", "\u001B[3m").replace("*", "\u001B[0m");
+        System.out.println(ORANGE + styledText + RESET);
     }
 
     public static void displaySuccesMessage(String riddle) {
