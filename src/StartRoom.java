@@ -74,24 +74,15 @@ public class StartRoom extends ARoom {
 
             switch (interactiveObject.getType()) {
                 case InteractiveType.BOOKSHELF:
-                    TextUI.displayMessage();
-                    TextUI.displayMessage();
-                    TextUI.displayMessage("You begin walking towards the large bookshelf.");
                     approachBookshelf();
                     break;
                 case InteractiveType.WALL_PAINTINGS:
-                    TextUI.displayMessage();
-                    TextUI.displayMessage();
                     approachPainting();
                     break;
                 case InteractiveType.TABLE_WITH_CANDLE:
-                    TextUI.displayMessage();
-                    TextUI.displayMessage();
                     approachTableCandle();
                     break;
                 case InteractiveType.LITTLE_GIRL:
-                    TextUI.displayMessage();
-                    TextUI.displayMessage();
                     approachGirl();
                     break;
             }
@@ -99,6 +90,7 @@ public class StartRoom extends ARoom {
     }
 
     private void approachTableCandle() {
+        TextUI.displayMessage();
         TextUI.displayMessage();
         TextUI.displayMessage("""
                 You begin to walk slowly towards the table, trying not to trip over anything on the floor.
@@ -137,6 +129,8 @@ public class StartRoom extends ARoom {
 
     private void approachBookshelf() {
         TextUI.displayMessage();
+        TextUI.displayMessage();
+        TextUI.displayMessage("You begin walking towards the large bookshelf.");
 
         if (!candleLit) {
             TextUI.displayMessage("""
@@ -238,19 +232,26 @@ public class StartRoom extends ARoom {
             options.add("Try to guess the riddle");
             options.add("Take a step back");
 
+            TextUI.displayMessage();
             choice = TextUI.getChoice("What do you want to do?", options);
         }
 
         if (choice == 0) {
+            TextUI.displayMessage();
             String answer = TextUI.getInput("Your guess:").trim();
 
             if (answer.equalsIgnoreCase("Fire")) {
                 riddleSolved = true;
             } else {
+                TextUI.displayMessage("""
+                            You say the word out loud but nothing happened.
+                            """);
+
                 List<String> options = new ArrayList<>();
                 options.add("Try again");
                 options.add("Take a step back");
 
+                TextUI.displayMessage();
                 choice = TextUI.getChoice("What do you want to do?", options);
 
                 if (choice == 0) {
@@ -267,11 +268,11 @@ public class StartRoom extends ARoom {
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     You take a step closer to the keypad.
+                    
                     On the keypad you see buttons with the numbers 0-9 and a green button on the right with the word “Confirm” on it.
-                    You see there are some options, but don’t really know what to do or what’s gonna happen.
                                         
                     Next to the keypad you see an old metal safe built into the wall.
-                    It looks impenetrable. Definitely too strong to brute force.
+                    It looks impenetrable. Definitely too strong to break open.
                     """);
             TextUI.getInput("Press Enter to continue...");
 
@@ -292,9 +293,9 @@ public class StartRoom extends ARoom {
 
                 TextUI.displayMessage();
                 TextUI.displaySuccesMessage("""
-                        A green light next to the keypad lights up and you hear a loud sound from the old safe opening.
-                                                
-                        You investigate the safe and find an old blanket inside. It looks very warm and would.
+                        A green light next to the keypad lights up and you hear the loud sound of the old safe opening.
+                        You investigate the old safe and find a blanket inside.
+                        It looks very warm. Sure to warm up anyone.
                         """);
                 TextUI.getInput("Press enter to continue...");
             } else {
@@ -322,99 +323,163 @@ public class StartRoom extends ARoom {
 
     private void approachPainting() {
         TextUI.displayMessage();
-        TextUI.displayMessage("You begin walking towards the wall where the paintings are hanging");
+        TextUI.displayMessage();
+        TextUI.displayMessage("You begin walking towards the wall with the paintings on.");
 
         if (!candleLit) {
+            TextUI.displayMessage();
             TextUI.displayMessage("""
-                    You see 5 paintings on the wall making a circle, but it’s too dark to get a proper look.
-                    Maybe you could find something in the room to illuminate the place a little more.
+                    You see the siloed of 5 paintings on the wall, marking a circle. But it’s too dark to see what's on them.
+                    Maybe something in the room could help you illuminate the place a little more.
                     """);
-            TextUI.getInput("Press enter to continue");
+            TextUI.getInput("Press Enter to continue...");
             return;
         }
 
+        TextUI.displayMessage();
         TextUI.displayMessage("""
-                You see 5 paintings on the wall making a circle, all of them are different.
-                They all have different people on it, doing different things.
-                The only thing they have in common is that they are all smiling.
-                No matter what they are doing or what's happening on the painting, the people are smiling.
+                You take a look at the 5 paintings on the wall. All of them depict something different.
+                Different people, doing different things.
+                                
+                They do have one thing in common though. They're all smiling.
+                No matter what they're doing or what's happening in the painting, the people are smiling.
                 """);
-        TextUI.getInput("Press enter to continue");
+        TextUI.getInput("Press Enter to continue...");
 
-        TextUI.displayMessage("In the middle of the paintings, there is a note: ");
+        TextUI.displayMessage();
+        TextUI.displayMessage("In the middle of the paintings, you see a note:");
         paintingRiddle();
     }
 
     private void paintingRiddle() {
-
         TextUI.displayRiddle("""
-                What is the highest number between 1 and 1.000.000 that don't have the letter “N” when you say it out loud?
-                Take that number and subtract 19 from the number. Remember the result of this.
-                Now take the number and add 351 to the number.
-                You should have a two-digit number and three-digit number.
-                put them in the order you got them to make a five-digit number and remember it
+                What is the highest number between 1 and 1.000.000 that does not contain the letter “N” when said out loud?
+                Take that number and subtract 19 from it.
+                Remember the result.
+                                
+                Now take the number and add 351 to it.
+                Remember the result.
+                                
+                You should now have a two-digit number and a three-digit number.
+                Put them together in the order you got them to make a five-digit number.
+                Remember this final number. You'll need it.
                 """);
-        TextUI.getInput("Press enter to continue");
 
-        TextUI.displaySuccesMessage("You’ve now acquired a five-digit number. It looks like there’s nothing more you can do with the paintings.");
-        TextUI.getInput("Press enter to continue");
-        TextUI.displayErrorMessage("Or maybe you did the math wrong, only time will tell...");
-        TextUI.getInput("Press enter to continue");
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displaySuccesMessage("""
+                With that done you’ve now acquired a five-digit number.
+                It looks like that's about all you can do with the paintings.
+                                
+                Maybe these clues you've gathered can be used somewhere else?
+                        """);
+
+        TextUI.getInput("Press Enter to continue...");
     }
 
     private void approachGirl() {
         TextUI.displayMessage();
-        TextUI.displayMessage("You begin walking towards the little girl standing in front of the door");
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You begin to slowly walk towards the little girl standing in front of the door.
+                She has buried her face in her hands.
+                """);
+        TextUI.getInput("Press Enter to continue...");
 
         if (!candleLit) {
-            TextUI.displayMessage("You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.");
-            TextUI.getInput("Press enter to continue");
-            TextUI.displayMessage("You're getting closer, and you're about 3 steps away from the girl when she...");
-            TextUI.getInput("Press enter to continue");
-            TextUI.displayErrorMessage("suddenly jumps on you with a knife. She hits you in the throat all while smiling at you. Everything goes dark.");
-            TextUI.displayErrorMessage("You died, noob");
-            TextUI.getInput("Press enter to continue");
-            TextUI.displayRiddle("*** Maybe a little light would help you in the darkness next time ***");
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    It's too dark to see so you attempt to get closer.
+                    
+                    Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
+                    You're now about 3 steps away from the girl when...
+                    """);
+            TextUI.getInput("Press Enter to continue...");
+
+            TextUI.displayMessage();
+            TextUI.displayErrorMessage("""
+                    She jumps on you with a knife, slicing your throat, all while smiling at you.
+                    As your lifeless body falls to the ground, the little girl continues to smile.
+                                        
+                    You died. Noob
+                    """);
+            TextUI.getInput("Press Enter to continue...");
+
+            TextUI.displayMessage();
+            TextUI.displayRiddle("*** Maybe a little light could've helped you in the darkness ***");
 
             running = false;
         } else {
+            TextUI.displayMessage();
             TextUI.displayMessage("""
-                    You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.
-                    The candle casts a small light on her, you see blod all around her.
+                    The candle casts a faint light on her.
+                    You notice she's standing in a puddle of blood.
                     """);
-            TextUI.getInput("Press enter to continue");
-            TextUI.displayRiddle("You see a suble smile even though she is shivering and you can hear her teeth chatter. She is freezing...");
-            TextUI.getInput("Press enter continue");
+            TextUI.getInput("Press Enter to continue...");
+
+            TextUI.displayMessage();
+            TextUI.displayRiddle("""
+                    You can't make out her face. But it looks like she's... smiling?
+                    The girl is shivering and you can hear her teeth chatter. She's clearly freezing.
+                    And yet... she continues to smile.
+                    """);
+            TextUI.getInput("Press Enter continue...");
+
+            TextUI.displayMessage();
             TextUI.displayMessage("""
-                    You try calling out to her, but get no answer...
-                    You feel like something isn’t right. She’s got something in her hand, but you can't make out what it is.
+                    You try calling out to her, but no answer...
+                    Something doesn't feel right. She’s got something in her hand. Something shiny.
+                    But you can't make out what it is.
                     """);
-            TextUI.getInput("Press enter to continue");
+            TextUI.getInput("Press Enter to continue...");
 
             ArrayList<String> options = new ArrayList<>();
             options.add("Go closer");
-            options.add("Take a step back");
+
             if (hasBlanket) {
                 options.add("Give her the blanket");
             }
 
-            int input = TextUI.getChoice("What would you like to do", options);
+            options.add("Take a step back");
+
+            TextUI.displayMessage();
+            int input = TextUI.getChoice("What would you like to do?", options);
 
             if (input == options.indexOf("Go closer")) {
-                TextUI.displayMessage("You're getting closer, and you're about 3 steps away from the girl when she...");
-                TextUI.getInput("Press enter to continue");
-                TextUI.displayErrorMessage("suddenly jumps on you with a knife. She hits you in the throat all while smiling at you. Everything goes dark.");
-                TextUI.displayErrorMessage("You died, noob");
-                TextUI.getInput("Press enter to continue");
-                TextUI.displayRiddle("*** Maybe she is more friendly when she is warm ***");
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                    Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
+                    You're getting closer and are now about 3 steps away from the girl when...
+                    """);
+                TextUI.getInput("Press Enter to continue...");
+
+                TextUI.displayMessage();
+                TextUI.displayErrorMessage("""
+                    She jumps on you with a knife, slicing your throat, all while smiling at you.
+                    As your lifeless body falls to the ground, the little girl continues to smile.
+                                        
+                    You died. Noob
+                    """);
+                TextUI.getInput("Press Enter to continue...");
+
+                TextUI.displayMessage();
+                TextUI.displayRiddle("*** Maybe she's more friendly when she's warm ***");
 
                 running = false;
-            } else if (hasBlanket && input == options.indexOf("Give her the blanket")) {
+            } else if (input == options.indexOf("Give her the blanket")) {
+                TextUI.displayMessage();
                 TextUI.displayMessage("""
-                        You give her the blanket. She moves away from the door.
-                        You've opened the door and now have acces to he next room.
+                        You nervously wrap the blanket around the little girl.
+                        She stops shivering and begins to move away from the door.
+                        """);
+                TextUI.getInput("Press Enter to continue...");
+
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                        You open the door and can now leave to the next room.
                         """);
                 TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
+                TextUI.getInput("Press Enter to continue...");
 
                 isComplete = true;
                 running = false;
