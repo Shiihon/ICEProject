@@ -121,4 +121,19 @@ public final class TextUI {
         String RESET = "\u001B[0m";
         System.out.println(RED + errorMsg + RESET);
     }
+
+    public static void displayRiddle(String riddle) {
+        String ORANGE = "\u001B[38;5;208m";
+        String RESET = "\u001B[0m";
+        System.out.println(ORANGE + riddle + RESET);
+    }
+
+    public static void displaySuccesMessage(String riddle) {
+        String GREEN = "\u001B[32m";
+        String RESET = "\u001B[0m";
+        System.out.println(GREEN + riddle + RESET);
+    }
+
+
+
 }
