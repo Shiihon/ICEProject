@@ -3,6 +3,7 @@ import java.util.LinkedHashMap;
 public abstract class ARoom implements Room {
 
     protected String story;
+    protected boolean isComplete;
     protected final LinkedHashMap<InteractiveType, InteractiveObject> interactiveObjects;
 
     public ARoom() {
@@ -14,4 +15,9 @@ public abstract class ARoom implements Room {
 
     @Override
     public abstract void exit();
+
+    @Override
+    public boolean isComplete() {
+        return isComplete;
+    }
 }
