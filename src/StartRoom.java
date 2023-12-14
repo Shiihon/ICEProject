@@ -5,8 +5,8 @@ public class StartRoom extends ARoom {
 
     private boolean candleLit;
     private boolean hasBlanket;
-    private boolean paintingPuzzleSolved;
     private boolean riddleSolved;
+
     private boolean running;
 
     public StartRoom() {
@@ -20,7 +20,38 @@ public class StartRoom extends ARoom {
     @Override
     public void enter() {
         TextUI.displayMessage();
-        TextUI.displayMessage("You have entered the mansion. You see numerous objects in the entrance and a locked door.");
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You hear a loud noise and suddenly everything goes dark. You wake up feeling dizzy.
+                As you wake up you try to look around. It’s dark and you can’t really make out anything.
+                But you appear to be in an old house of some sorts. It appears you were teleported, somewhere, somehow.
+                You’re not quite sure where you are but one thing’s for sure.
+                It’s cold. Almost freezing.
+                """);
+
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                Suddenly you hear a voice coming from the room. It sounds like a little girl, crying.
+                
+                "So cold... it’s... so cold..."
+                """);
+
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You get on your feet, your eyes are getting used to the dark but you still can’t make out any details.
+                You look around and try to orient yourself…
+                
+                You're in a big room filled with old furniture, paintings, and a faint smell of blood.
+                You see a table in the middle of the room with what looks to be a standing candle on it.
+                In the corner of the room is a large, tall rectangular object, a bookshelf maybe?
+                To your right, there’s something on the wall, paintings.
+                In the opposite end of the room you see a door
+                And in the right corner of the room, is what looks to be a... a... human, a girl? Or whatever it is, it’s crying.
+                """);
 
         runRoomLoop();
     }
@@ -30,7 +61,6 @@ public class StartRoom extends ARoom {
 
         while (running) {
             TextUI.displayMessage();
-            TextUI.displayMessage("You see numerous objects in the entrance.");
 
             List<String> options = new ArrayList<>();
 
@@ -110,9 +140,9 @@ public class StartRoom extends ARoom {
         options.add("The Exorcist");
         options.add("Scream");
         options.add("The nun");
-        options.add("Smile");
         options.add("It");
         options.add("Saw");
+        options.add("Smile");
         options.add("American Psycho");
         options.add("Sinister");
         options.add("Take a step back");
@@ -121,18 +151,20 @@ public class StartRoom extends ARoom {
 
         if (choice == options.indexOf("Smile")) {
             if (!riddleSolved) {
-                approachRiddle();
+                TextUI.displayMessage();
+                TextUI.displayMessage("You flip through the pages and see a message: ");
+                approachRiddle(true);
+
                 if (riddleSolved) {
+                    TextUI.displayMessage();
                     TextUI.displayMessage("You say the word out loud, and you are suddenly startled with a loud noise!");
                     TextUI.displayMessage("The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad");
-                    TextUI.getInput("Press enter to continue...");
-                    approachNumberpad();
+                    TextUI.getInput("Press Enter to continue...");
                 }
             }
             if (riddleSolved) {
                 approachNumberpad();
             }
-
         } else if (choice != options.indexOf("Take a step back")) {
             TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens.");
             TextUI.displayMessage("You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
@@ -140,37 +172,33 @@ public class StartRoom extends ARoom {
         }
     }
 
-    private void approachRiddle() {
-        TextUI.displayMessage("You flip through the pages and see a message: ");
+    private void approachRiddle(boolean firstTime) {
         TextUI.displayMessage("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
 
-        List<String> options = new ArrayList<>();
-        options.add("Try guessing riddle");
-        options.add("Take a step back");
+        int choice = 0;
 
-        int input = TextUI.getChoice("What do you want to do?", options);
+        if (firstTime) {
+            List<String> options = new ArrayList<>();
+            options.add("Try guessing riddle");
+            options.add("Take a step back");
 
-        if (input == options.indexOf("Take a step back")) {
-            TextUI.displayMessage("You leave the book...");
+            choice = TextUI.getChoice("What do you want to do?", options);
         }
-        guessRiddle(input, options);
-    }
 
-    private void guessRiddle(int input, List<String> options) {
-        if (input == options.indexOf("Try guessing riddle")) {
+        if (choice == 0) {
             String answer = TextUI.getInput("Your guess: ").trim();
-            if (answer.equalsIgnoreCase("fire")) {
+
+            if (answer.equalsIgnoreCase("Fire")) {
                 riddleSolved = true;
             } else {
-                TextUI.displayMessage("Nothings happens.....");
-                List<String> riddleOptions = new ArrayList<>();
+                List<String> options = new ArrayList<>();
+                options.add("Try again");
+                options.add("Take a step back");
 
-                riddleOptions.add("Try again");
-                riddleOptions.add("Take a step back");
+                choice = TextUI.getChoice("What do you want to do?", options);
 
-                int numberInput = TextUI.getChoice("What you want to do", riddleOptions);
-                if (numberInput == riddleOptions.indexOf("Try again")) {
-                    guessRiddle(input, options);
+                if (choice == 0) {
+                    approachRiddle(false);
                 }
             }
         }
