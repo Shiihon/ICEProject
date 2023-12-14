@@ -223,7 +223,7 @@ public class StartRoom extends ARoom {
 
     private void approachRiddle(boolean firstTime) {
         TextUI.displayMessage();
-        TextUI.displayRiddle("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
+        TextUI.displayRiddle("*I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?*");
 
         int choice = 0;
 
