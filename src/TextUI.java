@@ -23,6 +23,12 @@ public final class TextUI {
         return scanner.nextLine();
     }
 
+    /**
+     * Get a numeric input from the user while printing a small message
+     *
+     * @param msg  The message to show the user
+     * @return The input from the user in the form of an int
+     */
     public static int getNumericInput(String msg) {
         String input = getInput(msg);
 
