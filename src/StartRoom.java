@@ -227,9 +227,10 @@ public class StartRoom extends ARoom {
 
     private void approachNumberpad() {
 
-        TextUI.displayMessage("You take a step closer to the number pad, there is number form 1-9 and a green button on it, with the word “confirm” on it.");
-        TextUI.displayMessage("You see there are some options, but don’t really know what to do or what’s gonna happen.");
-        TextUI.displayMessage("Or what will be if you press the wrong numbers, so you decide not to do anything right now and look around again.\");");
+        TextUI.displayMessage("""
+                You take a step closer to the number pad.
+                There is number form 1-9 and a green button on it, with the word “confirm” on it.
+                You see there are some options, but don’t really know what to do or what’s gonna happen.""");
         TextUI.getInput("Press enter to continue...");
 
         List<String> options = new ArrayList<>();
