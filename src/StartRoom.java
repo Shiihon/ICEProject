@@ -59,8 +59,6 @@ public class StartRoom extends ARoom {
         running = true;
 
         while (running) {
-            TextUI.displayMessage();
-
             List<InteractiveObject> interactiveObjectList = new ArrayList<>(interactiveObjects.values());
             List<String> options = new ArrayList<>();
 
@@ -68,6 +66,8 @@ public class StartRoom extends ARoom {
                 options.add("Approach the " + interactiveObject);
             }
 
+            TextUI.displayMessage();
+            TextUI.displayMessage();
             int choice = TextUI.getChoice("What would you like to do?", options);
 
             InteractiveObject interactiveObject = interactiveObjectList.get(choice);
@@ -75,16 +75,23 @@ public class StartRoom extends ARoom {
             switch (interactiveObject.getType()) {
                 case InteractiveType.BOOKSHELF:
                     TextUI.displayMessage();
-                    TextUI.displayMessage("You begin to walk slowly towards the table, trying not to trip over anything on the floor.");
+                    TextUI.displayMessage();
+                    TextUI.displayMessage("You begin walking towards the large bookshelf.");
                     approachBookshelf();
                     break;
                 case InteractiveType.WALL_PAINTINGS:
+                    TextUI.displayMessage();
+                    TextUI.displayMessage();
                     approachPainting();
                     break;
                 case InteractiveType.TABLE_WITH_CANDLE:
+                    TextUI.displayMessage();
+                    TextUI.displayMessage();
                     approachTableCandle();
                     break;
                 case InteractiveType.LITTLE_GIRL:
+                    TextUI.displayMessage();
+                    TextUI.displayMessage();
                     approachGirl();
                     break;
             }
@@ -92,7 +99,6 @@ public class StartRoom extends ARoom {
     }
 
     private void approachTableCandle() {
-        TextUI.displayMessage();
         TextUI.displayMessage();
         TextUI.displayMessage("""
                 You begin to walk slowly towards the table, trying not to trip over anything on the floor.
@@ -130,20 +136,30 @@ public class StartRoom extends ARoom {
     }
 
     private void approachBookshelf() {
+        TextUI.displayMessage();
+
         if (!candleLit) {
-            TextUI.displayMessage("You see a lot of books on the shelf but you can't read and not even make out any of the titles.");
+            TextUI.displayMessage("""
+                    You see a lot of books on the shelf but it’s too dark in the room to make out any of the titles.
+                    Maybe something in the room could help to illuminate the place.
+                    """);
 
             TextUI.getInput("Press Enter to continue...");
             return;
         }
 
         TextUI.displayMessage("""
-                You see different books in the shelf. At the top of the shelf there is a sign with “Horror” written on it.
-                You quickly realize that all of the books are old and new horror movies, which makes you question why.
-                There are some that catch your eye more than others.
+                On the large bookshelf you see a lot of different titles: “IT, Saw, American Psycho, Sinister”. At the top of the shelf is a sign, “Horror”
+                You quickly realize that all the books are old and new Horror titles and you ask yourself “Why”?
+                Some of the books are very old, others more recent.
                 """);
 
         TextUI.getInput("Press enter to continue...");
+
+        chooseBook();
+    }
+
+    private void chooseBook() {
         List<String> options = new ArrayList<>();
 
         options.add("The Exorcist");
@@ -156,12 +172,15 @@ public class StartRoom extends ARoom {
         options.add("Sinister");
         options.add("Take a step back");
 
-        int choice = TextUI.getChoice("What do you want to do?", options);
+        TextUI.displayMessage();
+        int choice = TextUI.getChoice("What book would you like to look at? Or take a step back:", options);
 
         if (choice == options.indexOf("Smile")) {
             if (hasBlanket) {
                 TextUI.displayMessage();
-                TextUI.displayMessage("Nothing new happened.");
+                TextUI.displayMessage("""
+                        Nothing new happened.
+                        """);
                 TextUI.getInput("Press Enter to continue...");
                 approachBookshelf();
                 return;
@@ -169,45 +188,61 @@ public class StartRoom extends ARoom {
 
             if (!riddleSolved) {
                 TextUI.displayMessage();
-                TextUI.displayMessage("You flip through the pages and see a message: ");
+                TextUI.displayMessage("You flip through the pages and notice a strange message:");
                 approachRiddle(true);
 
                 if (riddleSolved) {
                     TextUI.displayMessage();
                     TextUI.displaySuccesMessage("""
-                            You say the word out loud, and you are suddenly startled with a loud noise!
-                            The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad.
+                            You say the word out loud, and you're suddenly startled with a loud noise!
+                            The bookshelf begins to move. After a short while, a keypad behind the bookshelf has been revealed.
                             """);
 
                     TextUI.getInput("Press Enter to continue...");
                 }
             }
             if (riddleSolved) {
-                approachNumberpad();
+                approachKeypad(true);
             }
         } else if (choice != options.indexOf("Take a step back")) {
-            TextUI.displayMessage("You take the book " + options.get(choice) + " which is full of dust. You start going through the pages reading the story, but nothing happens.");
-            TextUI.displayMessage("You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    You take the book '%s' out of the bookshelf.
+                    It’s full of dust. Safe to say it’s been here for a while. You begin reading through the pages, flipping through each one.
+                    After a while you flip the book over to take a look at the front cover, trying to see if anything catches your eye.
+                    But nothing. After a while you notice that nothing has happened. You put the book back on the shelf.
+                    """.formatted(options.get(choice)));
             TextUI.getInput("Press Enter to continue...");
-            approachBookshelf();
+
+            options.clear();
+            options.add("Look at a different book");
+            options.add("Take a step back");
+
+            TextUI.displayMessage();
+            choice = TextUI.getChoice("What would you like to do?", options);
+
+            if (choice == 0) {
+                chooseBook();
+            }
         }
     }
 
     private void approachRiddle(boolean firstTime) {
+        TextUI.displayMessage();
         TextUI.displayRiddle("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
 
         int choice = 0;
 
         if (firstTime) {
             List<String> options = new ArrayList<>();
-            options.add("Try guessing riddle");
+            options.add("Try to guess the riddle");
             options.add("Take a step back");
 
             choice = TextUI.getChoice("What do you want to do?", options);
         }
 
         if (choice == 0) {
-            String answer = TextUI.getInput("Your guess: ").trim();
+            String answer = TextUI.getInput("Your guess:").trim();
 
             if (answer.equalsIgnoreCase("Fire")) {
                 riddleSolved = true;
@@ -225,46 +260,61 @@ public class StartRoom extends ARoom {
         }
     }
 
-    private void approachNumberpad() {
+    private void approachKeypad(boolean firstTime) {
+        int choice = 0;
 
-        TextUI.displayMessage("""
-                You take a step closer to the number pad.
-                There is number form 1-9 and a green button on it, with the word “confirm” on it.
-                You see there are some options, but don’t really know what to do or what’s gonna happen.""");
-        TextUI.getInput("Press enter to continue...");
+        if (firstTime) {
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    You take a step closer to the keypad.
+                    On the keypad you see buttons with the numbers 0-9 and a green button on the right with the word “Confirm” on it.
+                    You see there are some options, but don’t really know what to do or what’s gonna happen.
+                                        
+                    Next to the keypad you see an old metal safe built into the wall.
+                    It looks impenetrable. Definitely too strong to brute force.
+                    """);
+            TextUI.getInput("Press Enter to continue...");
 
-        List<String> options = new ArrayList<>();
-        options.add("Use the numberpad");
-        options.add("Take a step back");
+            List<String> options = new ArrayList<>();
+            options.add("Use the keypad");
+            options.add("Take a step back");
 
-        int input = TextUI.getChoice("What do you want to do", options);
+            TextUI.displayMessage();
+            choice = TextUI.getChoice("What do you want to do?", options);
+        }
 
-        interactNumberpad(input, options);
+        if (choice == 0) {
+            TextUI.displayMessage();
+            int input = TextUI.getNumericInput("Enter the code:");
 
-    }
-
-    private void interactNumberpad(int input, List<String> options) {
-
-        if (input == options.indexOf("Use the numberpad")) {
-
-            int codeinput = TextUI.getNumericInput("Enter the code, then press enter....");
-
-            if (codeinput == 69420) {
-                TextUI.displaySuccesMessage("The green light is flashing and you hear a loud popping sound of a hidden safe getting opened");
-                TextUI.getInput("Press enter to continue...");
-                TextUI.displaySuccesMessage("You investigate the safe and find an old blanket. It's very thick and warm, and could keep anyone happy should they be wrapped around it");
+            if (input == 69420) {
                 hasBlanket = true;
 
+                TextUI.displayMessage();
+                TextUI.displaySuccesMessage("""
+                        A green light next to the keypad lights up and you hear a loud sound from the old safe opening.
+                                                
+                        You investigate the safe and find an old blanket inside. It looks very warm and would.
+                        """);
+                TextUI.getInput("Press enter to continue...");
             } else {
-                TextUI.displayMessage("Nothings happens.....");
-                List<String> numberpadOptions = new ArrayList<>();
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                        A red light next to the keypad lights up.
+                                                
+                        Nothings happened...
+                        """);
 
-                numberpadOptions.add("Try again");
-                numberpadOptions.add("Take a step back");
+                List<String> options = new ArrayList<>();
 
-                int numberInput = TextUI.getChoice("What you want to do", numberpadOptions);
-                if (numberInput == numberpadOptions.indexOf("Try again")) {
-                    interactNumberpad(input, options);
+                options.add("Try again");
+                options.add("Take a step back");
+
+                TextUI.displayMessage();
+                choice = TextUI.getChoice("What you want to do", options);
+
+                if (choice == 0) {
+                    approachKeypad(false);
                 }
             }
         }
