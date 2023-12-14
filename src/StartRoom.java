@@ -137,9 +137,11 @@ public class StartRoom extends ARoom {
             return;
         }
 
-        TextUI.displayMessage("You see different books in the shelf. At the top of the shelf there is a sign with “Horror” written on it");
-        TextUI.displayMessage("You quickly realize that all of the books are old and new horror movies, which makes you question why.");
-        TextUI.displayMessage("There are some that catch your eye more than others.");
+        TextUI.displayMessage("""
+                You see different books in the shelf. At the top of the shelf there is a sign with “Horror” written on it.
+                You quickly realize that all of the books are old and new horror movies, which makes you question why.
+                There are some that catch your eye more than others.
+                """);
 
         TextUI.getInput("Press enter to continue...");
         List<String> options = new ArrayList<>();
@@ -172,8 +174,11 @@ public class StartRoom extends ARoom {
 
                 if (riddleSolved) {
                     TextUI.displayMessage();
-                    TextUI.displaySuccesMessage("You say the word out loud, and you are suddenly startled with a loud noise!");
-                    TextUI.displaySuccesMessage("The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad");
+                    TextUI.displaySuccesMessage("""
+                            You say the word out loud, and you are suddenly startled with a loud noise!
+                            The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad.
+                            """);
+
                     TextUI.getInput("Press Enter to continue...");
                 }
             }
@@ -181,7 +186,7 @@ public class StartRoom extends ARoom {
                 approachNumberpad();
             }
         } else if (choice != options.indexOf("Take a step back")) {
-            TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens.");
+            TextUI.displayMessage("You take the book " + options.get(choice) + " which is full of dust. You start going through the pages reading the story, but nothing happens.");
             TextUI.displayMessage("You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
             TextUI.getInput("Press Enter to continue...");
             approachBookshelf();
@@ -269,14 +274,20 @@ public class StartRoom extends ARoom {
         TextUI.displayMessage("You begin walking towards the wall where the paintings are hanging");
 
         if (!candleLit) {
-            TextUI.displayMessage("You see 5 paintings on the wall making a circle, but it’s too dark to get a proper look.");
-            TextUI.displayMessage("Maybe you could find something in the room to illuminate the place a little more");
+            TextUI.displayMessage("""
+                    You see 5 paintings on the wall making a circle, but it’s too dark to get a proper look.
+                    Maybe you could find something in the room to illuminate the place a little more.
+                    """);
             TextUI.getInput("Press enter to continue");
             return;
         }
 
-        TextUI.displayMessage("You see 5 paintings on the wall making a circle, all of them are different. They all have different people on it, doing different things.");
-        TextUI.displayMessage("The only thing they have in common is that they are all smiling. No matter what they are doing or what's happening on the painting, the people are smiling.");
+        TextUI.displayMessage("""
+                You see 5 paintings on the wall making a circle, all of them are different.
+                They all have different people on it, doing different things.
+                The only thing they have in common is that they are all smiling.
+                No matter what they are doing or what's happening on the painting, the people are smiling.
+                """);
         TextUI.getInput("Press enter to continue");
 
         TextUI.displayMessage("In the middle of the paintings, there is a note: ");
@@ -285,11 +296,13 @@ public class StartRoom extends ARoom {
 
     private void paintingRiddle() {
 
-        TextUI.displayRiddle("What is the highest number between 1 and 1.000.000 that don't have the letter “N” when you say it out loud?");
-        TextUI.displayRiddle("Take that number and subtract 19 from the number." + "\nRemember this number.");
-        TextUI.displayRiddle("Now take the number and add 351 to the number.");
-        TextUI.displayRiddle("You should have a two-digit number and three-digit number");
-        TextUI.displayRiddle("put them in the order you got them to make a five-digit number and remember it");
+        TextUI.displayRiddle("""
+                What is the highest number between 1 and 1.000.000 that don't have the letter “N” when you say it out loud?
+                Take that number and subtract 19 from the number. Remember the result of this.
+                Now take the number and add 351 to the number.
+                You should have a two-digit number and three-digit number.
+                put them in the order you got them to make a five-digit number and remember it
+                """);
         TextUI.getInput("Press enter to continue");
 
         TextUI.displaySuccesMessage("You’ve now acquired a five-digit number. It looks like there’s nothing more you can do with the paintings.");
@@ -315,13 +328,17 @@ public class StartRoom extends ARoom {
         }
 
         if (candleLit) {
-            TextUI.displayMessage("You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.");
-            TextUI.displayMessage("The candle casts a small light on her, you see blod all around her.");
+            TextUI.displayMessage("""
+                    You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.
+                    The candle casts a small light on her, you see blod all around her.
+                    """);
             TextUI.getInput("Press enter to continue");
             TextUI.displayRiddle("You see a suble smile even though she is shivering and you can hear her teeth chatter. She is freezing...");
             TextUI.getInput("Press enter continue");
-            TextUI.displayMessage("you try calling out to her, but get no answer.");
-            TextUI.displayMessage("You feel like something isn’t right. She’s got something in her hand, but you can't make out what it is.");
+            TextUI.displayMessage("""
+                    You try calling out to her, but get no answer...
+                    You feel like something isn’t right. She’s got something in her hand, but you can't make out what it is.
+                    """);
             TextUI.getInput("Press enter to continue");
 
             ArrayList<String> options = new ArrayList<>();
@@ -344,8 +361,10 @@ public class StartRoom extends ARoom {
             } else if (input == options.indexOf("Take a step back")) {
                 return;
             }
-            TextUI.displayMessage("You give her the blanket. She moves away from the door.");
-            TextUI.displayMessage("You've opened the door and now have acces to he next room.");
+            TextUI.displayMessage("""
+                    You give her the blanket. She moves away from the door.
+                    You've opened the door and now have acces to he next room.
+                    """);
             TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
             running = false;
         }
