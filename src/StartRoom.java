@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +11,46 @@ public class StartRoom extends ARoom {
     public StartRoom() {
         super();
 
-        interactiveObjects.add(new InteractiveObject(InteractiveType.BOOKSHELF, "Bookshelf"));
-        interactiveObjects.add(new InteractiveObject(InteractiveType.WALL_PAINTINGS, "Painting"));
-        interactiveObjects.add(new InteractiveObject(InteractiveType.TABLE_CANDLE, "Candle"));
-        interactiveObjects.add(new InteractiveObject(InteractiveType.GIRL, "Girl"));
+        interactiveObjects.put(InteractiveType.BOOKSHELF, new InteractiveObject(InteractiveType.BOOKSHELF, "Bookshelf"));
+        interactiveObjects.put(InteractiveType.WALL_PAINTINGS, new InteractiveObject(InteractiveType.WALL_PAINTINGS, "Painting"));
+        interactiveObjects.put(InteractiveType.TABLE_WITH_CANDLE, new InteractiveObject(InteractiveType.TABLE_WITH_CANDLE, "Candle"));
+        interactiveObjects.put(InteractiveType.LITTLE_GIRL, new InteractiveObject(InteractiveType.LITTLE_GIRL, "Little girl"));
     }
 
     @Override
     public void enter() {
         TextUI.displayMessage();
-        TextUI.displayMessage("You have entered the mansion. You see numerous objects in the entrance and a door with a little girl in front of it.");
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You hear a loud noise and suddenly everything goes dark. You wake in a dark room feeling dizzy.
+                You can’t see much but you appear to be in an old house of some sorts.
+                It seems that you’ve been teleported, somewhere, somehow. You’re not quite sure where you are but one thing’s for sure.
+                It’s cold. Almost freezing.
+                """);
+
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                Suddenly you hear a voice coming from the room. It sounds like a little girl, crying.
+                                
+                "So cold... it’s... so cold..."
+                """);
+
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You get on your feet, and try to look around in the dark.
+                The room is filled with old furniture and paintings… and a faint smell of blood.
+                                
+                In the middle of the room is a table with what looks to be a standing candle on it.
+                To your right, are some paintings on the wall but you can’t make out any details.
+                In the corner of the room you see a large, tall rectangular object, a bookshelf maybe?
+                At the opposite end of the room you see a… a human, a little girl? Or whatever it is. It’s crying.
+                Behind the little girl you see a door. A way out maybe.
+                """);
+        TextUI.getInput("Press Enter to continue...");
 
         runRoomLoop();
     }
@@ -31,27 +60,31 @@ public class StartRoom extends ARoom {
 
         while (running) {
             TextUI.displayMessage();
-            TextUI.displayMessage("You see numerous objects in the entrance.");
 
+            List<InteractiveObject> interactiveObjectList = new ArrayList<>(interactiveObjects.values());
             List<String> options = new ArrayList<>();
 
-            for (InteractiveObject interactiveObject : interactiveObjects) {
+            for (InteractiveObject interactiveObject : interactiveObjectList) {
                 options.add("Approach the " + interactiveObject);
             }
 
             int choice = TextUI.getChoice("What would you like to do?", options);
 
-            switch (choice) {
-                case 0:
+            InteractiveObject interactiveObject = interactiveObjectList.get(choice);
+
+            switch (interactiveObject.getType()) {
+                case InteractiveType.BOOKSHELF:
+                    TextUI.displayMessage();
+                    TextUI.displayMessage("You begin to walk slowly towards the table, trying not to trip over anything on the floor.");
                     approachBookshelf();
                     break;
-                case 1:
+                case InteractiveType.WALL_PAINTINGS:
                     approachPainting();
                     break;
-                case 2:
+                case InteractiveType.TABLE_WITH_CANDLE:
                     approachTableCandle();
                     break;
-                case 3:
+                case InteractiveType.LITTLE_GIRL:
                     approachGirl();
                     break;
             }
@@ -59,9 +92,14 @@ public class StartRoom extends ARoom {
     }
 
     private void approachTableCandle() {
-
         TextUI.displayMessage();
-        TextUI.displayMessage("You approach the table with an unlit candle on it.");
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You begin to walk slowly towards the table, trying not to trip over anything on the floor.
+                                
+                Coming to the table you see a small metal object next to the standing candle. A lighter.
+                It’s looks old but still functional.
+                """);
 
         List<String> options = new ArrayList<>();
         options.add("Light the candle.");
@@ -71,33 +109,27 @@ public class StartRoom extends ARoom {
 
         switch (choice) {
             case 0:
-                TextUI.displayMessage();
-                TextUI.displayMessage("You lit the candle and can now see your surroundings better");
-                TextUI.getInput("Press Enter to continue...");
-
-                for (int i = interactiveObjects.size() - 1; i >= 0; i--) {
-                    InteractiveObject interactiveObject = interactiveObjects.get(i);
-
-                    if (interactiveObject.getType() == InteractiveType.TABLE_CANDLE) {
-                        interactiveObjects.remove(interactiveObject);
-                        break;
-                    }
-                }
-
+                interactiveObjects.remove(InteractiveType.TABLE_WITH_CANDLE);
                 candleLit = true;
+
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                        You light the candle and watch as it begins to light up the room.
+                        Suddenly you can see everything a little better.
+                        """);
+                TextUI.getInput("Press Enter to continue...");
                 break;
             case 1:
                 TextUI.displayMessage();
-                TextUI.displayMessage("You step away from the table.");
+                TextUI.displayMessage("""
+                        You step back from the table.
+                        """);
                 TextUI.getInput("Press Enter to continue...");
                 break;
         }
     }
 
     private void approachBookshelf() {
-        TextUI.displayMessage();
-        TextUI.displayMessage("You begin walking to the big bookshelf");
-
         if (!candleLit) {
             TextUI.displayMessage("You see a lot of books on the shelf but you can't read and not even make out any of the titles.");
 
@@ -115,9 +147,9 @@ public class StartRoom extends ARoom {
         options.add("The Exorcist");
         options.add("Scream");
         options.add("The nun");
-        options.add("Smile");
         options.add("It");
         options.add("Saw");
+        options.add("Smile");
         options.add("American Psycho");
         options.add("Sinister");
         options.add("Take a step back");
@@ -125,57 +157,64 @@ public class StartRoom extends ARoom {
         int choice = TextUI.getChoice("What do you want to do?", options);
 
         if (choice == options.indexOf("Smile")) {
+            if (hasBlanket) {
+                TextUI.displayMessage();
+                TextUI.displayMessage("Nothing new happened.");
+                TextUI.getInput("Press Enter to continue...");
+                approachBookshelf();
+                return;
+            }
+
             if (!riddleSolved) {
-                approachRiddle();
+                TextUI.displayMessage();
+                TextUI.displayMessage("You flip through the pages and see a message: ");
+                approachRiddle(true);
+
                 if (riddleSolved) {
+                    TextUI.displayMessage();
                     TextUI.displaySuccesMessage("You say the word out loud, and you are suddenly startled with a loud noise!");
                     TextUI.displaySuccesMessage("The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad");
-                    TextUI.getInput("Press enter to continue...");
-                    approachNumberpad();
+                    TextUI.getInput("Press Enter to continue...");
                 }
             }
             if (riddleSolved) {
                 approachNumberpad();
             }
-
         } else if (choice != options.indexOf("Take a step back")) {
             TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens.");
             TextUI.displayMessage("You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
+            TextUI.getInput("Press Enter to continue...");
             approachBookshelf();
         }
     }
 
-    private void approachRiddle() {
-        TextUI.displayMessage("You flip through the pages and see a message: ");
+    private void approachRiddle(boolean firstTime) {
         TextUI.displayRiddle("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
 
-        List<String> options = new ArrayList<>();
-        options.add("Try guessing riddle");
-        options.add("Take a step back");
+        int choice = 0;
 
-        int input = TextUI.getChoice("What do you want to do?", options);
+        if (firstTime) {
+            List<String> options = new ArrayList<>();
+            options.add("Try guessing riddle");
+            options.add("Take a step back");
 
-        if (input == options.indexOf("Take a step back")) {
-            TextUI.displayMessage("You leave the book...");
+            choice = TextUI.getChoice("What do you want to do?", options);
         }
-        guessRiddle(input, options);
-    }
 
-    private void guessRiddle(int input, List<String> options) {
-        if (input == options.indexOf("Try guessing riddle")) {
+        if (choice == 0) {
             String answer = TextUI.getInput("Your guess: ").trim();
-            if (answer.equalsIgnoreCase("fire")) {
+
+            if (answer.equalsIgnoreCase("Fire")) {
                 riddleSolved = true;
             } else {
-                TextUI.displayMessage("Nothings happens.....");
-                List<String> riddleOptions = new ArrayList<>();
+                List<String> options = new ArrayList<>();
+                options.add("Try again");
+                options.add("Take a step back");
 
-                riddleOptions.add("Try again");
-                riddleOptions.add("Take a step back");
+                choice = TextUI.getChoice("What do you want to do?", options);
 
-                int numberInput = TextUI.getChoice("What you want to do", riddleOptions);
-                if (numberInput == riddleOptions.indexOf("Try again")) {
-                    guessRiddle(input, options);
+                if (choice == 0) {
+                    approachRiddle(false);
                 }
             }
         }

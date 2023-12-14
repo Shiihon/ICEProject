@@ -44,15 +44,37 @@ public class Game {
     }
 
     public void newGame() {
-        String playerName = TextUI.getInput("What's your name?");
+        TextUI.displayMessage();
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                Welcome, brave soul, to "The Haunted Mansion" – an escape room like no other.
+                I’m the GameMaster and I will try to help you where I can. But I don’t have all the answers.
+                There are some things you have to figure out on your own.
+                                        
+                You will be tested in different puzzles and obstacles.
+                Objects and items will come up along the way. Remember them. They’re important.
+                                        
+                But don’t take too long.
+                Time is of the essence, someone or something may be watching you, waiting...
+                """);
 
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                But before we begin.""");
+
+        String playerName = TextUI.getInput("What's your name?");
         player = new Player(playerName);
 
         TextUI.displayMessage();
-        TextUI.displayMessage("Welcome " + player.getPlayerName() + ", to The Haunted Mansion.");
+        TextUI.displayMessage("""
+                Well %s, it's very nice to meet you.
+                Unfortunately we're out of time. There's no turning back now.
+                Good luck and try not to die.
+                """.formatted(player.getName()));
 
-        // Write story here
-        TextUI.displayMessage("You find yourself deep in the woods and see an old mansion. you approach the mansion.");
+        TextUI.getInput("Press Enter to continue...");
     }
 
     public void quit() {

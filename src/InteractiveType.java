@@ -2,6 +2,6 @@ public enum InteractiveType {
 
     BOOKSHELF,
     WALL_PAINTINGS,
-    TABLE_CANDLE,
-    GIRL
+    TABLE_WITH_CANDLE,
+    LITTLE_GIRL
 }

@@ -1,12 +1,12 @@
 public class Player {
 
-    private final String playerName;
+    private final String name;
 
-    public Player(String playerName) {
-        this.playerName = playerName;
+    public Player(String name) {
+        this.name = name;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getName() {
+        return name;
     }
 }
