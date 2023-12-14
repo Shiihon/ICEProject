@@ -1,13 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 public abstract class ARoom implements Room {
 
     protected String story;
-    protected final List<InteractiveObject> interactiveObjects;
+    protected final LinkedHashMap<InteractiveType, InteractiveObject> interactiveObjects;
 
     public ARoom() {
-        this.interactiveObjects = new ArrayList<>();
+        this.interactiveObjects = new LinkedHashMap<>();
     }
 
     @Override

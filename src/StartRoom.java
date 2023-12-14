@@ -12,9 +12,10 @@ public class StartRoom extends ARoom {
     public StartRoom() {
         super();
 
-        interactiveObjects.add(new InteractiveObject(InteractiveType.BOOKSHELF, "Bookshelf"));
-        interactiveObjects.add(new InteractiveObject(InteractiveType.WALL_PAINTINGS, "Painting"));
-        interactiveObjects.add(new InteractiveObject(InteractiveType.TABLE_CANDLE, "Candle"));
+        interactiveObjects.put(InteractiveType.BOOKSHELF, new InteractiveObject(InteractiveType.BOOKSHELF, "Bookshelf"));
+        interactiveObjects.put(InteractiveType.WALL_PAINTINGS, new InteractiveObject(InteractiveType.WALL_PAINTINGS, "Painting"));
+        interactiveObjects.put(InteractiveType.TABLE_WITH_CANDLE, new InteractiveObject(InteractiveType.TABLE_WITH_CANDLE, "Candle"));
+        interactiveObjects.put(InteractiveType.LITTLE_GIRL, new InteractiveObject(InteractiveType.LITTLE_GIRL, "Little girl"));
     }
 
     @Override
@@ -52,6 +53,7 @@ public class StartRoom extends ARoom {
                 In the opposite end of the room you see a door
                 And in the right corner of the room, is what looks to be a... a... human, a girl? Or whatever it is, it’s crying.
                 """);
+        TextUI.getInput("Press Enter to continue...");
 
         runRoomLoop();
     }
@@ -64,7 +66,7 @@ public class StartRoom extends ARoom {
 
             List<String> options = new ArrayList<>();
 
-            for (InteractiveObject interactiveObject : interactiveObjects) {
+            for (InteractiveObject interactiveObject : interactiveObjects.values()) {
                 options.add("Approach the " + interactiveObject);
             }
 
@@ -100,15 +102,7 @@ public class StartRoom extends ARoom {
                 TextUI.displayMessage("You lit the candle and can now see your surroundings better");
                 TextUI.getInput("Press Enter to continue...");
 
-                for (int i = interactiveObjects.size() - 1; i >= 0; i--) {
-                    InteractiveObject interactiveObject = interactiveObjects.get(i);
-
-                    if (interactiveObject.getType() == InteractiveType.TABLE_CANDLE) {
-                        interactiveObjects.remove(interactiveObject);
-                        break;
-                    }
-                }
-
+                interactiveObjects.remove(InteractiveType.TABLE_WITH_CANDLE);
                 candleLit = true;
                 break;
             case 1:
@@ -150,6 +144,14 @@ public class StartRoom extends ARoom {
         int choice = TextUI.getChoice("What do you want to do?", options);
 
         if (choice == options.indexOf("Smile")) {
+            if (hasBlanket) {
+                TextUI.displayMessage();
+                TextUI.displayMessage("Nothing new happened.");
+                TextUI.getInput("Press Enter to continue...");
+                approachBookshelf();
+                return;
+            }
+
             if (!riddleSolved) {
                 TextUI.displayMessage();
                 TextUI.displayMessage("You flip through the pages and see a message: ");
@@ -168,6 +170,7 @@ public class StartRoom extends ARoom {
         } else if (choice != options.indexOf("Take a step back")) {
             TextUI.displayMessage("You take " + options.get(choice) + " the book is full of dust. You start going through the pages reading the story, but nothing happens.");
             TextUI.displayMessage("You put the book back on the shelf, take a step back, you're looking at the bookshelf again.");
+            TextUI.getInput("Press Enter to continue...");
             approachBookshelf();
         }
     }
