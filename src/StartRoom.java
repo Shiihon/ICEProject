@@ -51,6 +51,9 @@ public class StartRoom extends ARoom {
                 case 2:
                     approachTableCandle();
                     break;
+                case 3:
+                    approachGirl();
+                    break;
             }
         }
     }
@@ -202,9 +205,9 @@ public class StartRoom extends ARoom {
             int codeinput = TextUI.getNumericInput("Enter the code, then press enter....");
 
             if (codeinput == 69420) {
-                TextUI.displayMessage("The green light is flashing and you hear a loud popping sound of a hidden safe getting opened");
+                TextUI.displaySuccesMessage("The green light is flashing and you hear a loud popping sound of a hidden safe getting opened");
                 TextUI.getInput("Press enter to continue...");
-                TextUI.displayMessage("You investigate the safe and find an old blanket. It's very thick and warm, and could keep anyone happy should they be wrapped around it");
+                TextUI.displaySuccesMessage("You investigate the safe and find an old blanket. It's very thick and warm, and could keep anyone happy should they be wrapped around it");
                 hasBlanket = true;
 
             } else {
