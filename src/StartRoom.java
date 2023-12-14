@@ -311,12 +311,11 @@ public class StartRoom extends ARoom {
             TextUI.displayErrorMessage("You died, noob");
             TextUI.getInput("Press enter to continue");
             TextUI.displayRiddle("*** Maybe a little light would help you in the darkness next time ***");
-            // brugeren dør og skal få muligheden for at starte nyt spil eller stoppe
-        }
 
-        if (candleLit) {
+            running = false;
+        } else {
             TextUI.displayMessage("You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.");
-            TextUI.displayMessage("The candle casts a small light on her, you see blod all around her.");
+            TextUI.displayMessage("The candle casts a small light on her, you see blood all around her.");
             TextUI.getInput("Press enter to continue");
             TextUI.displayRiddle("You see a suble smile even though she is shivering and you can hear her teeth chatter. She is freezing...");
             TextUI.getInput("Press enter continue");
@@ -340,14 +339,16 @@ public class StartRoom extends ARoom {
                 TextUI.displayErrorMessage("You died, noob");
                 TextUI.getInput("Press enter to continue");
                 TextUI.displayRiddle("*** Maybe she is more friendly when she is warm ***");
-                // brugeren dør og skal få muligheden for at starte nyt spil eller stoppe
-            } else if (input == options.indexOf("Take a step back")) {
-                return;
+
+                running = false;
+            } else if (hasBlanket && input == options.indexOf("Give her the blanket")) {
+                TextUI.displayMessage("You give her the blanket. She moves away from the door.");
+                TextUI.displayMessage("You've opened the door and now have acces to he next room.");
+                TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
+
+                isComplete = true;
+                running = false;
             }
-            TextUI.displayMessage("You give her the blanket. She moves away from the door.");
-            TextUI.displayMessage("You've opened the door and now have acces to he next room.");
-            TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
-            running = false;
         }
     }
 
