@@ -87,10 +87,19 @@ public class Game {
         int count = 0;
 
         while (running) {
-            rooms.get(count).enter();
+            Room currentRoom = rooms.get(count);
+            currentRoom.enter();
+
+            if (!currentRoom.isComplete()) {
+                TextUI.displayMessage();
+                TextUI.displayMessage("Game Over.");
+                break;
+            }
+
             count++;
 
             if (count < rooms.size()) {
+                TextUI.displayMessage();
                 String choice = TextUI.getChoiceYN("Do you wish to continue the game?");
 
                 switch (choice) {
