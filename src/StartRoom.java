@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,7 +6,6 @@ public class StartRoom extends ARoom {
 
     private boolean candleLit;
     private boolean hasBlanket;
-    private boolean paintingPuzzleSolved;
     private boolean riddleSolved;
     private boolean running;
 
@@ -15,12 +15,13 @@ public class StartRoom extends ARoom {
         interactiveObjects.add(new InteractiveObject(InteractiveType.BOOKSHELF, "Bookshelf"));
         interactiveObjects.add(new InteractiveObject(InteractiveType.WALL_PAINTINGS, "Painting"));
         interactiveObjects.add(new InteractiveObject(InteractiveType.TABLE_CANDLE, "Candle"));
+        interactiveObjects.add(new InteractiveObject(InteractiveType.GIRL, "Girl"));
     }
 
     @Override
     public void enter() {
         TextUI.displayMessage();
-        TextUI.displayMessage("You have entered the mansion. You see numerous objects in the entrance and a locked door.");
+        TextUI.displayMessage("You have entered the mansion. You see numerous objects in the entrance and a door with a little girl in front of it.");
 
         runRoomLoop();
     }
@@ -55,6 +56,7 @@ public class StartRoom extends ARoom {
     }
 
     private void approachTableCandle() {
+
         TextUI.displayMessage();
         TextUI.displayMessage("You approach the table with an unlit candle on it.");
 
@@ -123,8 +125,8 @@ public class StartRoom extends ARoom {
             if (!riddleSolved) {
                 approachRiddle();
                 if (riddleSolved) {
-                    TextUI.displayMessage("You say the word out loud, and you are suddenly startled with a loud noise!");
-                    TextUI.displayMessage("The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad");
+                    TextUI.displaySuccesMessage("You say the word out loud, and you are suddenly startled with a loud noise!");
+                    TextUI.displaySuccesMessage("The bookshelf starts moving. The bookshelf has now revealed a hidden numberpad");
                     TextUI.getInput("Press enter to continue...");
                     approachNumberpad();
                 }
@@ -142,7 +144,7 @@ public class StartRoom extends ARoom {
 
     private void approachRiddle() {
         TextUI.displayMessage("You flip through the pages and see a message: ");
-        TextUI.displayMessage("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
+        TextUI.displayRiddle("I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?");
 
         List<String> options = new ArrayList<>();
         options.add("Try guessing riddle");
@@ -174,10 +176,6 @@ public class StartRoom extends ARoom {
                 }
             }
         }
-    }
-
-    private void approachPainting() {
-
     }
 
     private void approachNumberpad() {
@@ -221,6 +219,93 @@ public class StartRoom extends ARoom {
                     interactNumberpad(input, options);
                 }
             }
+        }
+    }
+
+    private void approachPainting() {
+        TextUI.displayMessage();
+        TextUI.displayMessage("You begin walking towards the wall where the paintings are hanging");
+
+        if (!candleLit) {
+            TextUI.displayMessage("You see 5 paintings on the wall making a circle, but it’s too dark to get a proper look.");
+            TextUI.displayMessage("Maybe you could find something in the room to illuminate the place a little more");
+            TextUI.getInput("Press enter to continue");
+            return;
+        }
+
+        TextUI.displayMessage("You see 5 paintings on the wall making a circle, all of them are different. They all have different people on it, doing different things.");
+        TextUI.displayMessage("The only thing they have in common is that they are all smiling. No matter what they are doing or what's happening on the painting, the people are smiling.");
+        TextUI.getInput("Press enter to continue");
+
+        TextUI.displayMessage("In the middle of the paintings, there is a note: ");
+        paintingRiddle();
+    }
+
+    private void paintingRiddle() {
+
+        TextUI.displayRiddle("What is the highest number between 1 and 1.000.000 that don't have the letter “N” when you say it out loud?");
+        TextUI.displayRiddle("Take that number and subtract 19 from the number." + "\nRemember this number.");
+        TextUI.displayRiddle("Now take the number and add 351 to the number.");
+        TextUI.displayRiddle("You should have a two-digit number and three-digit number");
+        TextUI.displayRiddle("put them in the order you got them to make a five-digit number and remember it");
+        TextUI.getInput("Press enter to continue");
+
+        TextUI.displaySuccesMessage("You’ve now acquired a five-digit number. It looks like there’s nothing more you can do with the paintings.");
+        TextUI.getInput("Press enter to continue");
+        TextUI.displayErrorMessage("Or maybe you did the math wrong, only time will tell...");
+        TextUI.getInput("Press enter to continue");
+    }
+
+    private void approachGirl() {
+        TextUI.displayMessage();
+        TextUI.displayMessage("You begin walking towards the little girl standing in front of the door");
+
+        if (!candleLit) {
+            TextUI.displayMessage("You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.");
+            TextUI.getInput("Press enter to continue");
+            TextUI.displayMessage("You're getting closer, and you're about 3 steps away from the girl when she...");
+            TextUI.getInput("Press enter to continue");
+            TextUI.displayErrorMessage("suddenly jumps on you with a knife. She hits you in the throat all while smiling at you. Everything goes dark.");
+            TextUI.displayErrorMessage("You died, noob");
+            TextUI.getInput("Press enter to continue");
+            TextUI.displayRiddle("*** Maybe a little light would help you in the darkness next time ***");
+            // brugeren dør og skal få muligheden for at starte nyt spil eller stoppe
+        }
+
+        if (candleLit) {
+            TextUI.displayMessage("You can hear her crying louder and louder meanwhile the smell of blood is getting worse and worse.");
+            TextUI.displayMessage("The candle casts a small light on her, you see blod all around her.");
+            TextUI.getInput("Press enter to continue");
+            TextUI.displayRiddle("You see a suble smile even though she is shivering and you can hear her teeth chatter. She is freezing...");
+            TextUI.getInput("Press enter continue");
+            TextUI.displayMessage("you try calling out to her, but get no answer.");
+            TextUI.displayMessage("You feel like something isn’t right. She’s got something in her hand, but you can't make out what it is.");
+            TextUI.getInput("Press enter to continue");
+
+            ArrayList<String> options = new ArrayList<>();
+            options.add("Go closer");
+            options.add("Take a step back");
+            if (hasBlanket) {
+                options.add("Give her the blanket");
+            }
+
+            int input = TextUI.getChoice("What would you like to do", options);
+
+            if (input == options.indexOf("Go closer")) {
+                TextUI.displayMessage("You're getting closer, and you're about 3 steps away from the girl when she...");
+                TextUI.getInput("Press enter to continue");
+                TextUI.displayErrorMessage("suddenly jumps on you with a knife. She hits you in the throat all while smiling at you. Everything goes dark.");
+                TextUI.displayErrorMessage("You died, noob");
+                TextUI.getInput("Press enter to continue");
+                TextUI.displayRiddle("*** Maybe she is more friendly when she is warm ***");
+                // brugeren dør og skal få muligheden for at starte nyt spil eller stoppe
+            } else if (input == options.indexOf("Take a step back")) {
+                return;
+            }
+            TextUI.displayMessage("You give her the blanket. She moves away from the door.");
+            TextUI.displayMessage("You've opened the door and now have acces to he next room.");
+            TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
+            running = false;
         }
     }
 
