@@ -69,7 +69,7 @@ public class Game {
             count++;
 
             if (count < rooms.size()) {
-                String choice = TextUI.getChoiceYN("Do you wish to continue?");
+                String choice = TextUI.getChoiceYN("Do you wish to continue the game?");
 
                 switch (choice) {
                     case "Y":
