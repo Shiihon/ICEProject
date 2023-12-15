@@ -2,8 +2,10 @@ public interface Room {
 
     /**
      * Enter the room
+     *
+     * @param player The player to enter the room
      */
-    void enter();
+    void enter(Player player);
 
     /**
      * Exit the room
