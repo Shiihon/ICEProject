@@ -7,6 +7,7 @@ public class StartRoom extends ARoom {
     private boolean candleLit;
     private boolean hasBlanket;
     private boolean riddleSolved;
+    private boolean girlsRiddleSolved;
     private boolean running;
     private long startTime;
     private long endTime;
@@ -476,22 +477,74 @@ public class StartRoom extends ARoom {
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
                         You nervously wrap the blanket around the little girl.
-                        She stops shivering and begins to move away from the door.
+                        She stops shivering and begins speaking to you.
                         """);
-                TextUI.getInput("Press Enter to continue...");
 
-                TextUI.displayMessage();
-                TextUI.displayMessage("""
+                girlsRiddle(true);
+
+                if(girlsRiddleSolved)
+                {
+
+                    TextUI.displayRiddle("the girl stops smiling at you, she looks normal now.");
+                    TextUI.displayRiddle("She moves away form the door");
+                    TextUI.getInput("Press Enter to continue...");
+
+                    TextUI.displayMessage();
+                    TextUI.displayMessage("""
                         You open the door and can now leave to the next room.
                         """);
-                TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
-                TextUI.getInput("Press Enter to continue...");
+                    TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
+                    TextUI.getInput("Press Enter to continue...");
 
-                isComplete = true;
-                exit();
+                    isComplete = true;
+                    exit();
+
+                }
+
             }
         }
     }
+
+    private void girlsRiddle(boolean firstTime) {
+
+        TextUI.displayRiddle("What has keys, but can't open anything? ");
+        int choice = 0;
+
+        if (firstTime) {
+            List<String> options = new ArrayList<>();
+            options.add("Try to guess the riddle");
+            options.add("Take a step back");
+
+            TextUI.displayMessage();
+            choice = TextUI.getChoice("What do you want to do?", options);
+        }
+
+        if (choice == 0) {
+            TextUI.displayMessage();
+            String answer = TextUI.getInput("Your guess:").trim();
+
+            if (answer.equalsIgnoreCase("Piano")) {
+                girlsRiddleSolved = true;
+            } else {
+                TextUI.displayMessage("""
+                        You say the word out loud but nothing happened.
+                        The little girl is just looking at you, not moving, just smiling.
+                        """);
+
+                List<String> options = new ArrayList<>();
+                options.add("Try again");
+                options.add("Take a step back");
+
+                TextUI.displayMessage();
+                choice = TextUI.getChoice("What do you want to do?", options);
+
+                if (choice == 0) {
+                    girlsRiddle(false);
+                }
+            }
+        }
+    }
+
 
     @Override
     public long getTimeSpend() {
