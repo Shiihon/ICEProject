@@ -163,6 +163,7 @@ public class StartRoom extends ARoom {
                     "Ayyy %s, how are you? I see you’re not dead yet, that’s good.
                     Listen, this walkie talkie is the only way for me to get into contact with you.
                     So if you want my help during the game, you gotta put the walkie talkie in your pocket.
+                    Do notice that using the walkie talkie will cost you time.
                     Or you can be a bad bitch and leave me here, fly solo, play this on hardmode #iRespectTheGame”
                     """.formatted(player.getName()));
             TextUI.getInput("Press Enter to continue...");
@@ -236,6 +237,10 @@ public class StartRoom extends ARoom {
         options.add("Sinister");
         options.add("Take a step back");
 
+        if (hasWalkieTalkie) {
+            options.add("Get hint");
+        }
+
         TextUI.displayMessage();
         int choice = TextUI.getChoice("What book would you like to look at? Or take a step back:", options);
 
@@ -266,6 +271,24 @@ public class StartRoom extends ARoom {
             }
             if (riddleSolved) {
                 approachKeypad(true);
+            }
+        } else if (choice == options.indexOf("Get hint")) {
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    Maybe something else in the room could give you a clue?
+                    Perhaps those paintings on the wall over there.
+                    """);
+            TextUI.getInput("Press Enter to continue...");
+
+            options.clear();
+            options.add("Look at a book");
+            options.add("Take a step back");
+
+            TextUI.displayMessage();
+            choice = TextUI.getChoice("What would you like to do?", options);
+
+            if (choice == 0) {
+                chooseBook();
             }
         } else if (choice != options.indexOf("Take a step back")) {
             TextUI.displayMessage();
@@ -301,6 +324,10 @@ public class StartRoom extends ARoom {
             options.add("Try to guess the riddle");
             options.add("Take a step back");
 
+            if (hasWalkieTalkie) {
+                options.add("Get hint");
+            }
+
             TextUI.displayMessage();
             choice = TextUI.getChoice("What do you want to do?", options);
         }
@@ -312,6 +339,7 @@ public class StartRoom extends ARoom {
             if (answer.equalsIgnoreCase("Fire")) {
                 riddleSolved = true;
             } else {
+                TextUI.displayMessage();
                 TextUI.displayMessage("""
                         You say the word out loud but nothing happened.
                         """);
@@ -325,8 +353,18 @@ public class StartRoom extends ARoom {
 
                 if (choice == 0) {
                     approachRiddle(false);
+                } else if (choice == 2) {
+                    TextUI.displayMessage();
+                    TextUI.displayMessage("""
+                            Hmm. Turn red? Maybe it's something hot?
+                            """);
                 }
             }
+        } else if (choice == 2) {
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    Hmm. Turn red? Maybe it's something hot?
+                    """);
         }
     }
 
@@ -554,14 +592,10 @@ public class StartRoom extends ARoom {
                     TextUI.displayMessage("""
                             You open the door and can now leave to the next room.
                             """);
-                    TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
-                    TextUI.getInput("Press Enter to continue...");
 
                     isComplete = true;
                     exit();
-
                 }
-
             }
         }
     }
@@ -618,5 +652,11 @@ public class StartRoom extends ARoom {
     public void exit() {
         running = false;
         endTime = System.currentTimeMillis();
+
+        if (isComplete) {
+            TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
+        }
+
+        TextUI.getInput("Press Enter to continue...");
     }
 }
