@@ -96,6 +96,10 @@ public class Game {
                 break;
             }
 
+            TextUI.displayMessage();
+            TextUI.displayMessage("Time spend solving the room: " + convertSecondsToTime((int) currentRoom.getTimeSpend() / 1000));
+            TextUI.getInput("Press Enter to continue...");
+
             count++;
 
             if (count < rooms.size()) {
@@ -115,5 +119,20 @@ public class Game {
                 quit();
             }
         }
+    }
+
+    /**
+     * Convert seconds to a formatted time string
+     * Source: <a href="https://stackoverflow.com/a/6118983">Stack Overflow</a>
+     *
+     * @param totalSeconds The total seconds to be formatted
+     * @return The formatted time
+     */
+    public String convertSecondsToTime(int totalSeconds) {
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }

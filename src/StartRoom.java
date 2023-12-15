@@ -9,6 +9,7 @@ public class StartRoom extends ARoom {
     private boolean riddleSolved;
     private boolean running;
     private long startTime;
+    private long endTime;
 
     public StartRoom() {
         super();
@@ -25,7 +26,9 @@ public class StartRoom extends ARoom {
         TextUI.displayMessage();
         TextUI.displayMessage();
         TextUI.displayMessage("""
-                You hear a loud noise and suddenly everything goes dark. You wake in a dark room feeling dizzy.
+                You hear a loud noise and suddenly everything goes dark.
+                                
+                You wake in a dark room feeling dizzy.
                 You can’t see much but you appear to be in an old house of some sorts.
                 It seems that you’ve been teleported, somewhere, somehow. You’re not quite sure where you are but one thing’s for sure.
                 It’s cold. Almost freezing.
@@ -411,7 +414,7 @@ public class StartRoom extends ARoom {
             TextUI.displayMessage();
             TextUI.displayRiddle("*** Maybe a little light could've helped you in the darkness ***");
 
-            running = false;
+            exit();
         } else {
             TextUI.displayMessage();
             TextUI.displayMessage("""
@@ -468,7 +471,7 @@ public class StartRoom extends ARoom {
                 TextUI.displayMessage();
                 TextUI.displayRiddle("*** Maybe she's more friendly when she's warm ***");
 
-                running = false;
+                exit();
             } else if (input == options.indexOf("Give her the blanket")) {
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
@@ -485,26 +488,23 @@ public class StartRoom extends ARoom {
                 TextUI.getInput("Press Enter to continue...");
 
                 isComplete = true;
-                running = false;
-
-                long endTime = System.currentTimeMillis();
-                long spendTime = (endTime - startTime) / 1000;
-                TextUI.displayMessage("Time spend solving room: " + convertSecondsToTime((int) spendTime));
-                TextUI.getInput("Press enter to continue");
+                exit();
             }
         }
     }
 
-    public String convertSecondsToTime(int totalSecs){
-        int hours = totalSecs / 3600;
-        int minutes = (totalSecs % 3600) / 60;
-        int seconds = totalSecs % 60;
-
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    @Override
+    public long getTimeSpend() {
+        if (startTime > endTime) {
+            return System.currentTimeMillis() - startTime;
+        } else {
+            return endTime - startTime;
+        }
     }
 
     @Override
     public void exit() {
-        TextUI.displayMessage("Exit room");
+        running = false;
+        endTime = System.currentTimeMillis();
     }
 }
