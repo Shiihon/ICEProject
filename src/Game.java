@@ -122,7 +122,8 @@ public class Game {
     }
 
     /**
-     * Convert seconds to a formatted time string
+     * <p>Convert seconds to a formatted time string</p><br>
+     * <p>
      * Source: <a href="https://stackoverflow.com/a/6118983">Stack Overflow</a>
      *
      * @param totalSeconds The total seconds to be formatted
