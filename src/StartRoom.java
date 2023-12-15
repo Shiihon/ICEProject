@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ public class StartRoom extends ARoom {
     private boolean hasBlanket;
     private boolean riddleSolved;
     private boolean running;
+    private long startTime;
 
     public StartRoom() {
         super();
@@ -19,6 +21,7 @@ public class StartRoom extends ARoom {
 
     @Override
     public void enter() {
+        startTime = System.currentTimeMillis();
         TextUI.displayMessage();
         TextUI.displayMessage();
         TextUI.displayMessage("""
@@ -244,8 +247,8 @@ public class StartRoom extends ARoom {
                 riddleSolved = true;
             } else {
                 TextUI.displayMessage("""
-                            You say the word out loud but nothing happened.
-                            """);
+                        You say the word out loud but nothing happened.
+                        """);
 
                 List<String> options = new ArrayList<>();
                 options.add("Try again");
@@ -268,7 +271,7 @@ public class StartRoom extends ARoom {
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     You take a step closer to the keypad.
-                    
+                                        
                     On the keypad you see buttons with the numbers 0-9 and a green button on the right with the word “Confirm” on it.
                                         
                     Next to the keypad you see an old metal safe built into the wall.
@@ -390,7 +393,7 @@ public class StartRoom extends ARoom {
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     It's too dark to see so you attempt to get closer.
-                    
+                                        
                     Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
                     You're now about 3 steps away from the girl when...
                     """);
@@ -448,18 +451,18 @@ public class StartRoom extends ARoom {
             if (input == options.indexOf("Go closer")) {
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
-                    Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
-                    You're getting closer and are now about 3 steps away from the girl when...
-                    """);
+                        Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
+                        You're getting closer and are now about 3 steps away from the girl when...
+                        """);
                 TextUI.getInput("Press Enter to continue...");
 
                 TextUI.displayMessage();
                 TextUI.displayErrorMessage("""
-                    She jumps on you with a knife, slicing your throat, all while smiling at you.
-                    As your lifeless body falls to the ground, the little girl continues to smile.
-                                        
-                    You died. Noob
-                    """);
+                        She jumps on you with a knife, slicing your throat, all while smiling at you.
+                        As your lifeless body falls to the ground, the little girl continues to smile.
+                                            
+                        You died. Noob
+                        """);
                 TextUI.getInput("Press Enter to continue...");
 
                 TextUI.displayMessage();
@@ -483,8 +486,21 @@ public class StartRoom extends ARoom {
 
                 isComplete = true;
                 running = false;
+
+                long endTime = System.currentTimeMillis();
+                long spendTime = (endTime - startTime) / 1000;
+                TextUI.displayMessage("Time spend solving room: " + convertSecondsToTime((int) spendTime));
+                TextUI.getInput("Press enter to continue");
             }
         }
+    }
+
+    public String convertSecondsToTime(int totalSecs){
+        int hours = totalSecs / 3600;
+        int minutes = (totalSecs % 3600) / 60;
+        int seconds = totalSecs % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     @Override
