@@ -20,4 +20,7 @@ public abstract class ARoom implements Room {
     public boolean isComplete() {
         return isComplete;
     }
+
+    @Override
+    public abstract long getTimeSpend();
 }
