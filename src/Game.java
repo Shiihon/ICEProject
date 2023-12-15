@@ -88,7 +88,7 @@ public class Game {
 
         while (running) {
             Room currentRoom = rooms.get(count);
-            currentRoom.enter();
+            currentRoom.enter(player);
 
             if (!currentRoom.isComplete()) {
                 TextUI.displayMessage();
