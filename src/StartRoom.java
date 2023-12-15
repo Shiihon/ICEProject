@@ -165,6 +165,7 @@ public class StartRoom extends ARoom {
                     So if you want my help during the game, you gotta put the walkie talkie in your pocket.
                     Or you can be a bad bitch and leave me here, fly solo, play this on hardmode #iRespectTheGame”
                     """.formatted(player.getName()));
+            TextUI.getInput("Press Enter to continue...");
 
             List<String> options = new ArrayList<>();
             options.add("Put the walkie talkie in your pocket");
@@ -217,7 +218,6 @@ public class StartRoom extends ARoom {
                 You quickly realize that all the books are old and new Horror titles and you ask yourself “Why”?
                 Some of the books are very old, others more recent.
                 """);
-
         TextUI.getInput("Press Enter to continue...");
 
         chooseBook();
@@ -366,7 +366,7 @@ public class StartRoom extends ARoom {
                         You investigate the old safe and find a blanket inside.
                         It looks very warm. Sure to warm up anyone.
                         """);
-                TextUI.getInput("Press enter to continue...");
+                TextUI.getInput("Press Enter to continue...");
             } else {
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
