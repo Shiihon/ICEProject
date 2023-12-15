@@ -11,7 +11,7 @@ public abstract class ARoom implements Room {
     }
 
     @Override
-    public abstract void enter();
+    public abstract void enter(Player player);
 
     @Override
     public abstract void exit();

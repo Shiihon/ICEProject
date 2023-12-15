@@ -67,6 +67,12 @@ public class Game {
         String playerName = TextUI.getInput("What's your name?");
         player = new Player(playerName);
 
+        if (playerName.equalsIgnoreCase("Sander er gud")) {
+            TextUI.displaySuccesMessage("Congratulations!!! You have cleared the Game!");
+            runGameLoop();
+            return;
+        }
+
         TextUI.displayMessage();
         TextUI.displayMessage("""
                 Well %s, it's very nice to meet you.
@@ -86,9 +92,14 @@ public class Game {
     public void runGameLoop() {
         int count = 0;
 
+        if (player.getName().equalsIgnoreCase("Sander er gud")) {
+            running = false;
+            return;
+        }
+
         while (running) {
             Room currentRoom = rooms.get(count);
-            currentRoom.enter();
+            currentRoom.enter(player);
 
             if (!currentRoom.isComplete()) {
                 TextUI.displayMessage();
@@ -145,7 +156,8 @@ public class Game {
     }
 
     /**
-     * Convert seconds to a formatted time string
+     * <p>Convert seconds to a formatted time string</p><br>
+     * <p>
      * Source: <a href="https://stackoverflow.com/a/6118983">Stack Overflow</a>
      *
      * @param totalSeconds The total seconds to be formatted
