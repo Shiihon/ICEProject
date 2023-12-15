@@ -1,13 +1,14 @@
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StartRoom extends ARoom {
 
+    private Player player;
+    private boolean hasWalkieTalkie;
     private boolean candleLit;
     private boolean hasBlanket;
     private boolean riddleSolved;
-    private boolean girlsRiddleSolved;
+    private boolean girlRiddleSolved;
     private boolean running;
     private long startTime;
     private long endTime;
@@ -17,13 +18,15 @@ public class StartRoom extends ARoom {
 
         interactiveObjects.put(InteractiveType.BOOKSHELF, new InteractiveObject(InteractiveType.BOOKSHELF, "Bookshelf"));
         interactiveObjects.put(InteractiveType.WALL_PAINTINGS, new InteractiveObject(InteractiveType.WALL_PAINTINGS, "Painting"));
-        interactiveObjects.put(InteractiveType.TABLE_WITH_CANDLE, new InteractiveObject(InteractiveType.TABLE_WITH_CANDLE, "Candle"));
+        interactiveObjects.put(InteractiveType.TABLE, new InteractiveObject(InteractiveType.TABLE, "Candle"));
         interactiveObjects.put(InteractiveType.LITTLE_GIRL, new InteractiveObject(InteractiveType.LITTLE_GIRL, "Little girl"));
     }
 
     @Override
-    public void enter() {
+    public void enter(Player player) {
+        this.player = player;
         startTime = System.currentTimeMillis();
+
         TextUI.displayMessage();
         TextUI.displayMessage();
         TextUI.displayMessage("""
@@ -51,7 +54,7 @@ public class StartRoom extends ARoom {
                 You get on your feet, and try to look around in the dark.
                 The room is filled with old furniture and paintings… and a faint smell of blood.
                                 
-                In the middle of the room is a table with what looks to be a standing candle on it.
+                In the middle of the room is a table with what looks to be a standing candle on it and maybe something next to it.
                 To your right, are some paintings on the wall but you can’t make out any details.
                 In the corner of the room you see a large, tall rectangular object, a bookshelf maybe?
                 At the opposite end of the room you see a… a human, a little girl? Or whatever it is. It’s crying.
@@ -86,8 +89,8 @@ public class StartRoom extends ARoom {
                 case InteractiveType.WALL_PAINTINGS:
                     approachPainting();
                     break;
-                case InteractiveType.TABLE_WITH_CANDLE:
-                    approachTableCandle();
+                case InteractiveType.TABLE:
+                    approachTable();
                     break;
                 case InteractiveType.LITTLE_GIRL:
                     approachGirl();
@@ -96,41 +99,101 @@ public class StartRoom extends ARoom {
         }
     }
 
-    private void approachTableCandle() {
+    private void approachTable() {
         TextUI.displayMessage();
         TextUI.displayMessage();
-        TextUI.displayMessage("""
-                You begin to walk slowly towards the table, trying not to trip over anything on the floor.
-                                
-                Coming to the table you see a small metal object next to the standing candle. A lighter.
-                It’s looks old but still functional.
-                """);
 
-        List<String> options = new ArrayList<>();
-        options.add("Light the candle.");
-        options.add("Exit");
+        if (!candleLit) {
+            TextUI.displayMessage("""
+                    You begin to slowly walk towards the table, trying not to trip over anything on the floor.
+                        
+                    Coming to the table you see a small metal object next to the standing candle. A lighter.
+                    It’s looks old but still functional.
+                    """);
 
-        int choice = TextUI.getChoice("What would you like to do?", options);
+            List<String> options = new ArrayList<>();
+            options.add("Light the candle.");
+            options.add("Exit");
 
-        switch (choice) {
-            case 0:
-                interactiveObjects.remove(InteractiveType.TABLE_WITH_CANDLE);
-                candleLit = true;
+            TextUI.displayMessage();
+            int choice = TextUI.getChoice("What would you like to do?", options);
 
-                TextUI.displayMessage();
-                TextUI.displayMessage("""
-                        You light the candle and watch as it begins to light up the room.
-                        Suddenly you can see everything a little better.
-                        """);
-                TextUI.getInput("Press Enter to continue...");
-                break;
-            case 1:
-                TextUI.displayMessage();
-                TextUI.displayMessage("""
-                        You step back from the table.
-                        """);
-                TextUI.getInput("Press Enter to continue...");
-                break;
+            TextUI.displayMessage();
+            switch (choice) {
+                case 0:
+                    candleLit = true;
+
+                    TextUI.displayMessage("""
+                            You light the candle and watch as it begins to light up the room.
+                            Suddenly you can see everything a little better.
+                            """);
+                    break;
+                case 1:
+                    TextUI.displayMessage("""
+                            You step back from the table.
+                            """);
+            }
+
+            TextUI.getInput("Press Enter to continue...");
+        } else {
+            TextUI.displayMessage("""
+                    You walk towards the table.
+                    """);
+        }
+
+        if (hasWalkieTalkie) {
+            TextUI.displayMessage("""
+                    Nothing changed since the last time you were here.
+                    """);
+            TextUI.getInput("Press Enter to continue...");
+            return;
+        }
+
+        if (candleLit) {
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    On the table you notice a walkie talkie on the edge of the table.
+                    Looking at the walkie talkie you notice a small sticky note on the bottom. “Gamemaster”.
+                    You pick up the walkie talkie and immediately a voice begins speaking through.
+                    """);
+            TextUI.getInput("Press Enter to continue...");
+
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    "Ayyy %s, how are you? I see you’re not dead yet, that’s good.
+                    Listen, this walkie talkie is the only way for me to get into contact with you.
+                    So if you want my help during the game, you gotta put the walkie talkie in your pocket.
+                    Or you can be a bad bitch and leave me here, fly solo, play this on hardmode #iRespectTheGame”
+                    """.formatted(player.getName()));
+
+            List<String> options = new ArrayList<>();
+            options.add("Put the walkie talkie in your pocket");
+            options.add("Fly solo");
+
+            TextUI.displayMessage();
+            int choice = TextUI.getChoice("What would you like to do?", options);
+
+            TextUI.displayMessage();
+            switch (choice) {
+                case 0:
+                    hasWalkieTalkie = true;
+
+                    TextUI.displayMessage("""
+                            You put the walkie talkie in your pocket.
+                                                        
+                            "If you need help with anything, use the walkie talkie.
+                            Gamemaster, signing out."
+                            """);
+                    break;
+                case 1:
+                    TextUI.displayMessage("""
+                            “I respect the decision.
+                            The walkie talkie will remain on the table if you change your mind.
+                            Good luck.”
+                            """);
+            }
+
+            TextUI.getInput("Press Enter to continue...");
         }
     }
 
@@ -155,7 +218,7 @@ public class StartRoom extends ARoom {
                 Some of the books are very old, others more recent.
                 """);
 
-        TextUI.getInput("Press enter to continue...");
+        TextUI.getInput("Press Enter to continue...");
 
         chooseBook();
     }
@@ -183,7 +246,6 @@ public class StartRoom extends ARoom {
                         Nothing new happened.
                         """);
                 TextUI.getInput("Press Enter to continue...");
-                approachBookshelf();
                 return;
             }
 
@@ -331,7 +393,7 @@ public class StartRoom extends ARoom {
     private void approachPainting() {
         TextUI.displayMessage();
         TextUI.displayMessage();
-        TextUI.displayMessage("You begin walking towards the wall with the paintings on.");
+        TextUI.displayMessage("You begin walking towards the paintings on the wall.");
 
         if (!candleLit) {
             TextUI.displayMessage();
@@ -480,10 +542,9 @@ public class StartRoom extends ARoom {
                         She stops shivering and begins speaking to you.
                         """);
 
-                girlsRiddle(true);
+                girlRiddle(true);
 
-                if(girlsRiddleSolved)
-                {
+                if (girlRiddleSolved) {
 
                     TextUI.displayRiddle("the girl stops smiling at you, she looks normal now.");
                     TextUI.displayRiddle("She moves away form the door");
@@ -491,8 +552,8 @@ public class StartRoom extends ARoom {
 
                     TextUI.displayMessage();
                     TextUI.displayMessage("""
-                        You open the door and can now leave to the next room.
-                        """);
+                            You open the door and can now leave to the next room.
+                            """);
                     TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
                     TextUI.getInput("Press Enter to continue...");
 
@@ -505,9 +566,8 @@ public class StartRoom extends ARoom {
         }
     }
 
-    private void girlsRiddle(boolean firstTime) {
-
-        TextUI.displayRiddle("What has keys, but can't open anything? ");
+    private void girlRiddle(boolean firstTime) {
+        TextUI.displayRiddle("*What has keys, but can't open anything?*");
         int choice = 0;
 
         if (firstTime) {
@@ -524,7 +584,7 @@ public class StartRoom extends ARoom {
             String answer = TextUI.getInput("Your guess:").trim();
 
             if (answer.equalsIgnoreCase("Piano")) {
-                girlsRiddleSolved = true;
+                girlRiddleSolved = true;
             } else {
                 TextUI.displayMessage("""
                         You say the word out loud but nothing happened.
@@ -539,12 +599,11 @@ public class StartRoom extends ARoom {
                 choice = TextUI.getChoice("What do you want to do?", options);
 
                 if (choice == 0) {
-                    girlsRiddle(false);
+                    girlRiddle(false);
                 }
             }
         }
     }
-
 
     @Override
     public long getTimeSpend() {
