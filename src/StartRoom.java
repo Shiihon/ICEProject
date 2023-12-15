@@ -482,8 +482,7 @@ public class StartRoom extends ARoom {
 
                 girlsRiddle(true);
 
-                if(girlsRiddleSolved)
-                {
+                if (girlsRiddleSolved) {
 
                     TextUI.displayRiddle("the girl stops smiling at you, she looks normal now.");
                     TextUI.displayRiddle("She moves away form the door");
@@ -491,8 +490,8 @@ public class StartRoom extends ARoom {
 
                     TextUI.displayMessage();
                     TextUI.displayMessage("""
-                        You open the door and can now leave to the next room.
-                        """);
+                            You open the door and can now leave to the next room.
+                            """);
                     TextUI.displaySuccesMessage("Congratulations!!! You have cleared the first room!");
                     TextUI.getInput("Press Enter to continue...");
 
