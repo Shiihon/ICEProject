@@ -31,6 +31,7 @@ public final class FileIO {
 
         if (!ensureFileExistence(file)) {
             TextUI.displayErrorMessage("Error: Could not ensure the existence of file " + file.getParentFile().getName() + "/" + file.getName() + ".");
+            return;
         }
 
         try {
