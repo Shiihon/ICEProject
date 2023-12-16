@@ -189,8 +189,7 @@ public class StartRoom extends ARoom {
                     break;
                 case 1:
                     TextUI.displayMessage("""
-                            “I respect the decision.
-                            The walkie talkie will remain on the table if you change your mind.
+                            “I respect the decision. The walkie talkie will remain on the table if you change your mind.
                             Good luck.”
                             """);
             }
@@ -317,10 +316,10 @@ public class StartRoom extends ARoom {
         TextUI.displayMessage();
         TextUI.displayRiddle("*I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?*");
 
+        List<String> options = new ArrayList<>();
         int choice = 0;
 
         if (firstTime) {
-            List<String> options = new ArrayList<>();
             options.add("Try to guess the riddle");
             options.add("Take a step back");
 
@@ -329,7 +328,7 @@ public class StartRoom extends ARoom {
             }
 
             TextUI.displayMessage();
-            choice = TextUI.getChoice("What do you want to do?", options);
+            choice = TextUI.getChoice("Wat do you want to do?", options);
         }
 
         if (choice == 0) {
@@ -344,31 +343,36 @@ public class StartRoom extends ARoom {
                         You say the word out loud but nothing happened.
                         """);
 
-                List<String> options = new ArrayList<>();
+                options.clear();
                 options.add("Try again");
                 options.add("Take a step back");
 
-                TextUI.displayMessage();
-                choice = TextUI.getChoice("What do you want to do?", options);
+                if (hasWalkieTalkie) {
+                    options.add("Get hint");
+                }
+
+                choice = TextUI.getChoice("Wat do you want to do?", options);
 
                 if (choice == 0) {
                     approachRiddle(false);
-                } else if (choice == 2) {
-                    TextUI.displayMessage();
-                    TextUI.displayMessage("""
-                            Hmm. Turn red? Maybe it's something hot?
-                            """);
+                    return;
                 }
             }
-        } else if (choice == 2) {
+        }
+
+        if (choice == options.indexOf("Get hint")) {
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     Hmm. Turn red? Maybe it's something hot?
                     """);
+            TextUI.getInput("Press Enter to continue...");
+
+            approachRiddle(true);
         }
     }
 
     private void approachKeypad(boolean firstTime) {
+        List<String> options = new ArrayList<>();
         int choice = 0;
 
         if (firstTime) {
@@ -383,9 +387,12 @@ public class StartRoom extends ARoom {
                     """);
             TextUI.getInput("Press Enter to continue...");
 
-            List<String> options = new ArrayList<>();
             options.add("Use the keypad");
             options.add("Take a step back");
+
+            if (hasWalkieTalkie) {
+                options.add("Get hint");
+            }
 
             TextUI.displayMessage();
             choice = TextUI.getChoice("What do you want to do?", options);
@@ -412,18 +419,44 @@ public class StartRoom extends ARoom {
                                                 
                         Nothings happened...
                         """);
+                TextUI.getInput("Press Enter to continue...");
 
-                List<String> options = new ArrayList<>();
-
+                options.clear();
                 options.add("Try again");
                 options.add("Take a step back");
 
+                if (hasWalkieTalkie) {
+                    options.add("Get hint");
+                }
+
                 TextUI.displayMessage();
-                choice = TextUI.getChoice("What you want to do", options);
+                choice = TextUI.getChoice("What you want to do?", options);
 
                 if (choice == 0) {
                     approachKeypad(false);
+                    return;
                 }
+            }
+        }
+
+        if (choice == options.indexOf("Get hint")) {
+            TextUI.displayMessage();
+            TextUI.displayMessage("""
+                    Maybe something else in the room could give you a clue?
+                    Perhaps those paintings on the wall over there.
+                    There appears to be some kind of note in the middle of them?
+                    """);
+            TextUI.getInput("Press Enter to continue...");
+
+            options.clear();
+            options.add("Use keypad");
+            options.add("Take a step back");
+
+            TextUI.displayMessage();
+            choice = TextUI.getChoice("What you want to do?", options);
+
+            if (choice == 0) {
+                approachKeypad(false);
             }
         }
     }
@@ -579,12 +612,13 @@ public class StartRoom extends ARoom {
                         You nervously wrap the blanket around the little girl.
                         She stops shivering and begins speaking to you.
                         """);
+                TextUI.getInput("Press Enter to continue...");
 
+                TextUI.displayMessage();
                 girlRiddle(true);
 
                 if (girlRiddleSolved) {
-
-                    TextUI.displayRiddle("the girl stops smiling at you, she looks normal now.");
+                    TextUI.displayRiddle("The girl stops smiling at you, she looks normal now.");
                     TextUI.displayRiddle("She moves away form the door");
                     TextUI.getInput("Press Enter to continue...");
 
