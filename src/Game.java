@@ -136,7 +136,6 @@ public class Game {
                 List<String> scoreData = FileIO.readScoreData("data/scoreData");
 
                 if (!scoreData.isEmpty()) {
-
                     for (String s : scoreData) {
                         String[] row = s.split(",");
 
@@ -149,7 +148,7 @@ public class Game {
                         players.add(p);
                     }
                 }
-                FileIO.saveScoreData(players);
+                FileIO.saveScoreData("data/scoreData", players);
             }
             quit();
         }
