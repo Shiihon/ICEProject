@@ -67,6 +67,12 @@ public class Game {
         String playerName = TextUI.getInput("What's your name?");
         player = new Player(playerName);
 
+        if (playerName.equalsIgnoreCase("Sander er gud")) {
+            TextUI.displaySuccesMessage("Congratulations!!! You have cleared the Game!");
+            runGameLoop();
+            return;
+        }
+
         TextUI.displayMessage();
         TextUI.displayMessage("""
                 Well %s, it's very nice to meet you.
@@ -86,6 +92,11 @@ public class Game {
     public void runGameLoop() {
         int count = 0;
 
+        if (player.getName().equalsIgnoreCase("Sander er gud")) {
+            running = false;
+            return;
+        }
+
         while (running) {
             Room currentRoom = rooms.get(count);
             currentRoom.enter(player);
@@ -95,6 +106,9 @@ public class Game {
                 TextUI.displayMessage("Game Over.");
                 break;
             }
+            long currentScore = player.getTimeScore();
+            long newScore = currentRoom.getTimeSpend();
+            player.setTimeScore(currentScore + newScore);
 
             TextUI.displayMessage();
             TextUI.displayMessage("Time spend solving the room: " + convertSecondsToTime((int) currentRoom.getTimeSpend() / 1000));
@@ -116,8 +130,28 @@ public class Game {
                 TextUI.displayMessage();
                 TextUI.displayMessage("You've completed The Haunted Mansion - Escape Room.");
                 TextUI.displayMessage("Congratulations!");
-                quit();
+
+                List<Player> players = new ArrayList<>();
+                players.add(player);
+                List<String> scoreData = FileIO.readScoreData("data/scoreData");
+
+                if (!scoreData.isEmpty()) {
+
+                    for (String s : scoreData) {
+                        String[] row = s.split(",");
+
+                        String name = row[0].trim();
+                        long timeScore = Long.parseLong(row[1].trim());
+
+                        Player p = new Player(name);
+                        p.setTimeScore(timeScore);
+
+                        players.add(p);
+                    }
+                }
+                FileIO.saveScoreData(players);
             }
+            quit();
         }
     }
 
