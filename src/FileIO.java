@@ -29,8 +29,8 @@ public final class FileIO {
     public static void saveScoreData(String path, List<Player> players) {
         File file = new File(path);
 
-        if (ensureFileExistence(file)) {
-            TextUI.displayErrorMessage("Error: Could not write write data to file " + file.getParentFile().getName() + "/" + file.getName() + ".");
+        if (!ensureFileExistence(file)) {
+            TextUI.displayErrorMessage("Error: Could not ensure the existence of file " + file.getParentFile().getName() + "/" + file.getName() + ".");
         }
 
         try {
