@@ -111,7 +111,7 @@ public class Game {
             player.setTimeScore(currentScore + newScore);
 
             TextUI.displayMessage();
-            TextUI.displayMessage("Time spend solving the room: " + convertSecondsToTime((int) currentRoom.getTimeSpend() / 1000));
+            TextUI.displayMessage("Time spend solving the room: " + convertSecondsToTime((int) currentRoom.getTimeSpend() / 1000) + ", Including penalty time: " + convertSecondsToTime((int) (currentRoom.getTimeSpend() + currentRoom.getPenaltyTime()) / 1000));
             TextUI.getInput("Press Enter to continue...");
 
             count++;

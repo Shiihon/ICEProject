@@ -20,9 +20,15 @@ public interface Room {
     boolean isComplete();
 
     /**
-     * Get the total time spend in the room in milliseconds
+     * Get the total time spend in the room in milliseconds, not counting penalty time
      *
-     * @return The time spend in the room in milliseconds
+     * @return The time spend in the room in milliseconds, not counting penalty time
      */
     long getTimeSpend();
+
+    /**
+     * Get the penalty time accumulated from using hints in milliseconds
+     * @return The current total penalty time for the room in milliseconds
+     */
+    long getPenaltyTime();
 }
