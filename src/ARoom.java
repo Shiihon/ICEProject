@@ -2,8 +2,11 @@ import java.util.LinkedHashMap;
 
 public abstract class ARoom implements Room {
 
-    protected String story;
     protected boolean isComplete;
+    protected long penaltyTime;
+    protected long startTime;
+    protected long endTime;
+
     protected final LinkedHashMap<InteractiveType, InteractiveObject> interactiveObjects;
 
     public ARoom() {
@@ -21,6 +24,16 @@ public abstract class ARoom implements Room {
         return isComplete;
     }
 
+    public long getTimeSpend() {
+        if (startTime > endTime) {
+            return System.currentTimeMillis() - startTime;
+        } else {
+            return endTime - startTime;
+        }
+    }
+
     @Override
-    public abstract long getTimeSpend();
+    public long getPenaltyTime() {
+        return penaltyTime;
+    }
 }

@@ -3,6 +3,7 @@ import java.util.List;
 
 public class StartRoom extends ARoom {
 
+    private static final long HINT_PENALTY_TIME = 5000;
     private Player player;
     private boolean hasWalkieTalkie;
     private boolean candleLit;
@@ -10,8 +11,6 @@ public class StartRoom extends ARoom {
     private boolean riddleSolved;
     private boolean girlRiddleSolved;
     private boolean running;
-    private long startTime;
-    private long endTime;
 
     public StartRoom() {
         super();
@@ -26,6 +25,8 @@ public class StartRoom extends ARoom {
     public void enter(Player player) {
         this.player = player;
         startTime = System.currentTimeMillis();
+        endTime = 0;
+        penaltyTime = 0;
 
         TextUI.displayMessage();
         TextUI.displayMessage();
@@ -272,6 +273,8 @@ public class StartRoom extends ARoom {
                 approachKeypad(true);
             }
         } else if (choice == options.indexOf("Get hint")) {
+            penaltyTime += HINT_PENALTY_TIME;
+
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     Maybe something else in the room could give you a clue?
@@ -361,6 +364,8 @@ public class StartRoom extends ARoom {
         }
 
         if (choice == options.indexOf("Get hint")) {
+            penaltyTime += HINT_PENALTY_TIME;
+
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     Hmm. Turn red? Maybe it's something hot?
@@ -440,6 +445,8 @@ public class StartRoom extends ARoom {
         }
 
         if (choice == options.indexOf("Get hint")) {
+            penaltyTime += HINT_PENALTY_TIME;
+
             TextUI.displayMessage();
             TextUI.displayMessage("""
                     Maybe something else in the room could give you a clue?
@@ -670,15 +677,6 @@ public class StartRoom extends ARoom {
                     girlRiddle(false);
                 }
             }
-        }
-    }
-
-    @Override
-    public long getTimeSpend() {
-        if (startTime > endTime) {
-            return System.currentTimeMillis() - startTime;
-        } else {
-            return endTime - startTime;
         }
     }
 
