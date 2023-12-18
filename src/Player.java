@@ -24,4 +24,8 @@ public class Player {
         this.timeScore = score;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s: %s", this.name, this.timeScore);
+    }
 }
