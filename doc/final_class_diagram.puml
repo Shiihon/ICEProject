@@ -1,0 +1,116 @@
+@startuml
+class Game {
+- List<Room> rooms
+- Player player
+- boolean running
++ void setup()
++ void startMenu()
++ void newGame()
++ void quit()
++ void runGameLoop()
+- void displayScores(List<Player>)
+- List<Player> loadScoreData()
++ String convertSecondsToTime(int)
+}
+enum InteractiveType {
++  BOOKSHELF
++  WALL_PAINTINGS
++  TABLE
++  LITTLE_GIRL
+}
+abstract class ARoom {
+# LinkedHashMap<InteractiveType,InteractiveObject> interactiveObjects
+# boolean isComplete
+# long penaltyTime
+# long startTime
+# long endTime
+# Player player
++ {abstract}void enter(Player)
++ {abstract}void exit()
++ boolean isComplete()
++ long getTimeSpend()
++ long getPenaltyTime()
+}
+class Player {
+- String name
+- long timeScore
++ String getName()
++ long getTimeScore()
++ void setTimeScore(long)
++ String toString()
++ int compareTo(Player)
+}
+class InteractiveObject {
+- InteractiveType type
+- String name
++ InteractiveType getType()
++ String getName()
++ String toString()
+}
+class StartRoom {
+- {static} long HINT_PENALTY_TIME
+- boolean hasWalkieTalkie
+- boolean riddleSolved
+- boolean hasBlanket
+- boolean candleLit
+- boolean running
+- Player player
++ void enter(Player)
++ void runRoomLoop()
+- void approachTable()
+- void approachBookshelf()
+- void chooseBook()
+- void approachRiddle()
+- void approachKeypad()
+- void approachPainting()
+- void paintingRiddle()
+- void approachGirl()
+- void approachGirlDeath()
+- void girlRiddle()
++ void exit()
+}
+class Main {
++ {static} void main(String[])
+}
+class FileIO {
++ {static} List<String> readScoreData(String)
++ {static} void saveScoreData(String,List<Player>)
+- {static} boolean ensureFileExistence(File)
+}
+class TextUI {
+- {static} Scanner scanner
++ {static} String getInput(String)
++ {static} int getNumericInput(String)
++ {static} int getChoice(String,List<?>)
++ {static} String getChoiceYN(String)
++ {static} void displayOptions(List<?>)
++ {static} void displayMessage()
++ {static} void displayMessage(String)
++ {static} void displayErrorMessage(String)
++ {static} void displayRiddle(String)
++ {static} void displaySuccesMessage(String)
+}
+interface Room {
++ void enter(Player)
++ void exit()
++ boolean isComplete()
++ long getTimeSpend()
++ long getPenaltyTime()
+}
+
+Main *-- Game
+Game *-- Player
+Game *-- Room
+Game *-- TextUI
+Game *-- FileIO
+
+TextUI *-- StartRoom
+
+Room <|-- ARoom
+ARoom <|-- StartRoom
+ARoom *-- InteractiveObject
+ARoom *-- Player
+
+InteractiveObject *-- InteractiveType
+
+@enduml
