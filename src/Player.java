@@ -1,4 +1,4 @@
-public class Player {
+public class Player implements Comparable<Player> {
 
     private final String name;
     private long timeScore;
@@ -27,5 +27,10 @@ public class Player {
     @Override
     public String toString() {
         return String.format("%s: %s", this.name, this.timeScore);
+    }
+
+    @Override
+    public int compareTo(Player other) {
+        return Long.compare(timeScore, other.getTimeScore());
     }
 }
