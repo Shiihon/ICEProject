@@ -560,8 +560,9 @@ public class StartRoom extends ARoom {
             } else if (choice == options.indexOf("Give her the blanket")) {
                 girlRiddle();
 
-                TextUI.displayRiddle("The girl stops smiling at you, she looks normal now.");
-                TextUI.displayRiddle("She moves away form the door");
+                TextUI.displayMessage();
+                TextUI.displayRiddle("The girl stops smiling at you. She looks normal now.");
+                TextUI.displayRiddle("After a second moves away form the door");
                 TextUI.getInput("Press Enter to continue...");
 
                 TextUI.displayMessage();
@@ -628,6 +629,7 @@ public class StartRoom extends ARoom {
 
         while (!riddleSolved) {
             if (!tryAgain) {
+                TextUI.displayMessage();
                 TextUI.displayRiddle("*What has keys, but can't open anything?*");
 
                 options.set(0, "Try to guess the riddle");
@@ -667,7 +669,6 @@ public class StartRoom extends ARoom {
                         Keys? It reminds you of music but you're not quite sure why.
                         """);
                 TextUI.getInput("Press Enter to continue...");
-                TextUI.displayMessage();
 
                 tryAgain = false;
             }

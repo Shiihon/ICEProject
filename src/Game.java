@@ -12,8 +12,6 @@ public class Game {
         this.rooms = new ArrayList<>();
 
         this.rooms.add(new StartRoom());
-        this.rooms.add(new StartRoom());
-        this.rooms.add(new StartRoom());
     }
 
     public void setup() {
@@ -106,12 +104,14 @@ public class Game {
                 TextUI.displayMessage("Game Over.");
                 break;
             }
+
             long currentScore = player.getTimeScore();
-            long newScore = currentRoom.getTimeSpend();
+            long newScore = currentRoom.getTimeSpend() + currentRoom.getPenaltyTime();
             player.setTimeScore(currentScore + newScore);
 
             TextUI.displayMessage();
-            TextUI.displayMessage("Time spend solving the room: " + convertSecondsToTime((int) currentRoom.getTimeSpend() / 1000) + ", Including penalty time: " + convertSecondsToTime((int) (currentRoom.getTimeSpend() + currentRoom.getPenaltyTime()) / 1000));
+            TextUI.displayMessage("Time spend solving the room: " + convertSecondsToTime((int) currentRoom.getTimeSpend() / 1000));
+            TextUI.displayMessage("Time including penalty time: " + convertSecondsToTime((int) newScore / 1000));
             TextUI.getInput("Press Enter to continue...");
 
             count++;
@@ -130,6 +130,7 @@ public class Game {
                 TextUI.displayMessage();
                 TextUI.displayMessage("You've completed The Haunted Mansion - Escape Room.");
                 TextUI.displayMessage("Congratulations!");
+                TextUI.displayMessage("Your final total time is: " + convertSecondsToTime((int) player.getTimeScore() / 1000));
 
                 List<Player> players = new ArrayList<>();
                 players.add(player);
