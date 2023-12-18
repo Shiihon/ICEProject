@@ -14,7 +14,10 @@ public final class FileIO {
 
         try {
             Scanner scan = new Scanner(file);
-            scan.nextLine(); //Skip header
+
+            if (scan.hasNextLine()) {
+                scan.nextLine(); //Skip header
+            }
 
             while (scan.hasNextLine()) {
                 String s = scan.nextLine();
