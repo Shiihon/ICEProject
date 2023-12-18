@@ -9,7 +9,6 @@ public class StartRoom extends ARoom {
     private boolean hasBlanket;
     private boolean candleLit;
     private boolean running;
-    private Player player;
 
     public StartRoom() {
         super();
@@ -22,10 +21,7 @@ public class StartRoom extends ARoom {
 
     @Override
     public void enter(Player player) {
-        this.player = player;
-        startTime = System.currentTimeMillis();
-        endTime = 0;
-        penaltyTime = 0;
+        super.enter(player);
 
         TextUI.displayMessage();
         TextUI.displayMessage();
