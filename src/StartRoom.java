@@ -4,13 +4,12 @@ import java.util.List;
 public class StartRoom extends ARoom {
 
     private static final long HINT_PENALTY_TIME = 5000;
-    private Player player;
     private boolean hasWalkieTalkie;
-    private boolean candleLit;
-    private boolean hasBlanket;
     private boolean riddleSolved;
-    private boolean girlRiddleSolved;
+    private boolean hasBlanket;
+    private boolean candleLit;
     private boolean running;
+    private Player player;
 
     public StartRoom() {
         super();
@@ -257,7 +256,7 @@ public class StartRoom extends ARoom {
             if (!riddleSolved) {
                 TextUI.displayMessage();
                 TextUI.displayMessage("You flip through the pages and notice a strange message:");
-                approachRiddle(true);
+                approachRiddle();
 
                 if (riddleSolved) {
                     TextUI.displayMessage();
@@ -270,7 +269,7 @@ public class StartRoom extends ARoom {
                 }
             }
             if (riddleSolved) {
-                approachKeypad(true);
+                approachKeypad();
             }
         } else if (choice == options.indexOf("Get hint")) {
             penaltyTime += HINT_PENALTY_TIME;
@@ -302,168 +301,142 @@ public class StartRoom extends ARoom {
                     """.formatted(options.get(choice)));
             TextUI.getInput("Press Enter to continue...");
 
-            options.clear();
-            options.add("Look at a different book");
-            options.add("Take a step back");
+            chooseBook();
+        }
+    }
+
+    private void approachRiddle() {
+        List<String> options = new ArrayList<>();
+        boolean tryAgain = false;
+        int choice = 0;
+
+        options.add("Try to guess the riddle");
+        options.add("Take a step back");
+
+        if (hasWalkieTalkie) {
+            options.add("Get hint");
+        }
+
+        while (choice != options.indexOf("Take a step back")) {
+            if (!tryAgain) {
+                TextUI.displayRiddle("*I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?*");
+
+                options.set(0, "Try to guess the riddle");
+
+                TextUI.displayMessage();
+                choice = TextUI.getChoice("Wat do you want to do?", options);
+            } else {
+                options.set(0, "Try again");
+
+                choice = TextUI.getChoice("Wat do you want to do?", options);
+
+                if (choice == 0) {
+                    TextUI.displayMessage();
+                    TextUI.displayRiddle("*I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?*");
+                }
+            }
+
+            if (choice == 0) {
+                TextUI.displayMessage();
+                String answer = TextUI.getInput("Your guess:").trim();
+
+                if (answer.equalsIgnoreCase("Fire")) {
+                    riddleSolved = true;
+                    break;
+                } else {
+                    TextUI.displayMessage();
+                    TextUI.displayErrorMessage("""
+                            You say the word out loud but nothing happened.
+                            """);
+
+                    tryAgain = true;
+                }
+            } else if (choice == options.indexOf("Get hint")) {
+                penaltyTime += HINT_PENALTY_TIME;
+
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                        Hmm. Turn red? Maybe it's something hot?
+                        """);
+                TextUI.getInput("Press Enter to continue...");
+                TextUI.displayMessage();
+
+                tryAgain = false;
+            }
+        }
+    }
+
+    private void approachKeypad() {
+        TextUI.displayMessage();
+        TextUI.displayMessage("""
+                You take a step closer to the keypad.
+                                    
+                On the keypad you see buttons with the numbers 0-9 and a green button on the right with the word “Confirm” on it.
+                                    
+                Next to the keypad you see an old metal safe built into the wall.
+                It looks impenetrable. Definitely too strong to break open.
+                """);
+        TextUI.getInput("Press Enter to continue...");
+
+        List<String> options = new ArrayList<>();
+        boolean tryAgain = false;
+        int choice = 0;
+
+        options.add("Use keypad");
+        options.add("Take a step back");
+
+        if (hasWalkieTalkie) {
+            options.add("Get hint");
+        }
+
+        while (choice != options.indexOf("Take a step back")) {
+            if (!tryAgain) {
+                options.set(0, "Use keypad");
+            } else {
+                options.set(0, "Try again");
+            }
 
             TextUI.displayMessage();
             choice = TextUI.getChoice("What would you like to do?", options);
 
             if (choice == 0) {
-                chooseBook();
-            }
-        }
-    }
+                TextUI.displayMessage();
+                int input = TextUI.getNumericInput("Enter the code:");
 
-    private void approachRiddle(boolean firstTime) {
-        TextUI.displayMessage();
-        TextUI.displayRiddle("*I'm always hungry, I must be fed. The finger I touch will soon turn red. What am I?*");
+                if (input == 69420) {
+                    hasBlanket = true;
 
-        List<String> options = new ArrayList<>();
-        int choice = 0;
+                    TextUI.displayMessage();
+                    TextUI.displaySuccesMessage("""
+                            A green light next to the keypad lights up and you hear the loud sound of the old safe opening.
+                            You investigate the old safe and find a blanket inside.
+                            It looks very warm. Sure to warm up anyone.
+                            """);
+                    TextUI.getInput("Press Enter to continue...");
+                    break;
+                } else {
+                    TextUI.displayMessage();
+                    TextUI.displayErrorMessage("""
+                            A red light next to the keypad lights up.
+                                                    
+                            Nothings happened...
+                            """);
+                    TextUI.getInput("Press Enter to continue...");
 
-        if (firstTime) {
-            options.add("Try to guess the riddle");
-            options.add("Take a step back");
+                    tryAgain = true;
+                }
+            } else if (choice == options.indexOf("Get hint")) {
+                penaltyTime += HINT_PENALTY_TIME;
 
-            if (hasWalkieTalkie) {
-                options.add("Get hint");
-            }
-
-            TextUI.displayMessage();
-            choice = TextUI.getChoice("Wat do you want to do?", options);
-        }
-
-        if (choice == 0) {
-            TextUI.displayMessage();
-            String answer = TextUI.getInput("Your guess:").trim();
-
-            if (answer.equalsIgnoreCase("Fire")) {
-                riddleSolved = true;
-            } else {
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
-                        You say the word out loud but nothing happened.
-                        """);
-
-                options.clear();
-                options.add("Try again");
-                options.add("Take a step back");
-
-                if (hasWalkieTalkie) {
-                    options.add("Get hint");
-                }
-
-                choice = TextUI.getChoice("Wat do you want to do?", options);
-
-                if (choice == 0) {
-                    approachRiddle(false);
-                    return;
-                }
-            }
-        }
-
-        if (choice == options.indexOf("Get hint")) {
-            penaltyTime += HINT_PENALTY_TIME;
-
-            TextUI.displayMessage();
-            TextUI.displayMessage("""
-                    Hmm. Turn red? Maybe it's something hot?
-                    """);
-            TextUI.getInput("Press Enter to continue...");
-
-            approachRiddle(true);
-        }
-    }
-
-    private void approachKeypad(boolean firstTime) {
-        List<String> options = new ArrayList<>();
-        int choice = 0;
-
-        if (firstTime) {
-            TextUI.displayMessage();
-            TextUI.displayMessage("""
-                    You take a step closer to the keypad.
-                                        
-                    On the keypad you see buttons with the numbers 0-9 and a green button on the right with the word “Confirm” on it.
-                                        
-                    Next to the keypad you see an old metal safe built into the wall.
-                    It looks impenetrable. Definitely too strong to break open.
-                    """);
-            TextUI.getInput("Press Enter to continue...");
-
-            options.add("Use the keypad");
-            options.add("Take a step back");
-
-            if (hasWalkieTalkie) {
-                options.add("Get hint");
-            }
-
-            TextUI.displayMessage();
-            choice = TextUI.getChoice("What do you want to do?", options);
-        }
-
-        if (choice == 0) {
-            TextUI.displayMessage();
-            int input = TextUI.getNumericInput("Enter the code:");
-
-            if (input == 69420) {
-                hasBlanket = true;
-
-                TextUI.displayMessage();
-                TextUI.displaySuccesMessage("""
-                        A green light next to the keypad lights up and you hear the loud sound of the old safe opening.
-                        You investigate the old safe and find a blanket inside.
-                        It looks very warm. Sure to warm up anyone.
-                        """);
-                TextUI.getInput("Press Enter to continue...");
-            } else {
-                TextUI.displayMessage();
-                TextUI.displayMessage("""
-                        A red light next to the keypad lights up.
-                                                
-                        Nothings happened...
+                        Maybe something else in the room could give you a clue?
+                        Perhaps those paintings on the wall over there.
+                        There appears to be some kind of note in the middle of them?
                         """);
                 TextUI.getInput("Press Enter to continue...");
 
-                options.clear();
-                options.add("Try again");
-                options.add("Take a step back");
-
-                if (hasWalkieTalkie) {
-                    options.add("Get hint");
-                }
-
-                TextUI.displayMessage();
-                choice = TextUI.getChoice("What you want to do?", options);
-
-                if (choice == 0) {
-                    approachKeypad(false);
-                    return;
-                }
-            }
-        }
-
-        if (choice == options.indexOf("Get hint")) {
-            penaltyTime += HINT_PENALTY_TIME;
-
-            TextUI.displayMessage();
-            TextUI.displayMessage("""
-                    Maybe something else in the room could give you a clue?
-                    Perhaps those paintings on the wall over there.
-                    There appears to be some kind of note in the middle of them?
-                    """);
-            TextUI.getInput("Press Enter to continue...");
-
-            options.clear();
-            options.add("Use keypad");
-            options.add("Take a step back");
-
-            TextUI.displayMessage();
-            choice = TextUI.getChoice("What you want to do?", options);
-
-            if (choice == 0) {
-                approachKeypad(false);
+                tryAgain = false;
             }
         }
     }
@@ -527,6 +500,7 @@ public class StartRoom extends ARoom {
     private void approachGirl() {
         TextUI.displayMessage();
         TextUI.displayMessage();
+
         TextUI.displayMessage("""
                 You begin to slowly walk towards the little girl standing in front of the door.
                 She has buried her face in her hands.
@@ -534,28 +508,8 @@ public class StartRoom extends ARoom {
         TextUI.getInput("Press Enter to continue...");
 
         if (!candleLit) {
-            TextUI.displayMessage();
-            TextUI.displayMessage("""
-                    It's too dark to see so you attempt to get closer.
-                                        
-                    Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
-                    You're now about 3 steps away from the girl when...
-                    """);
-            TextUI.getInput("Press Enter to continue...");
-
-            TextUI.displayMessage();
-            TextUI.displayErrorMessage("""
-                    She jumps on you with a knife, slicing your throat, all while smiling at you.
-                    As your lifeless body falls to the ground, the little girl continues to smile.
-                                        
-                    You died. Noob
-                    """);
-            TextUI.getInput("Press Enter to continue...");
-
-            TextUI.displayMessage();
-            TextUI.displayRiddle("*** Maybe a little light could've helped you in the darkness ***");
-
-            exit();
+            approachGirlDeath();
+            return;
         } else {
             TextUI.displayMessage();
             TextUI.displayMessage("""
@@ -579,103 +533,143 @@ public class StartRoom extends ARoom {
                     But you can't make out what it is.
                     """);
             TextUI.getInput("Press Enter to continue...");
+        }
 
-            ArrayList<String> options = new ArrayList<>();
-            options.add("Go closer");
+        List<String> options = new ArrayList<>();
+        int choice = 0;
 
-            if (hasBlanket) {
-                options.add("Give her the blanket");
-            }
+        options.add("Go closer");
 
-            options.add("Take a step back");
+        if (hasBlanket) {
+            options.add("Give her the blanket");
+        }
 
+        options.add("Take a step back");
+
+        if (hasWalkieTalkie) {
+            options.add("Get hint");
+        }
+
+        while (choice != options.indexOf("Take a step back")) {
             TextUI.displayMessage();
-            int input = TextUI.getChoice("What would you like to do?", options);
+            choice = TextUI.getChoice("What would you like to do?", options);
 
-            if (input == options.indexOf("Go closer")) {
+            if (choice == 0) {
+                approachGirlDeath();
+                break;
+            } else if (choice == options.indexOf("Give her the blanket")) {
+                girlRiddle();
+
+                TextUI.displayRiddle("The girl stops smiling at you, she looks normal now.");
+                TextUI.displayRiddle("She moves away form the door");
+                TextUI.getInput("Press Enter to continue...");
+
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
-                        Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
-                        You're getting closer and are now about 3 steps away from the girl when...
+                        You open the door and can now leave to the next room.
                         """);
-                TextUI.getInput("Press Enter to continue...");
 
-                TextUI.displayMessage();
-                TextUI.displayErrorMessage("""
-                        She jumps on you with a knife, slicing your throat, all while smiling at you.
-                        As your lifeless body falls to the ground, the little girl continues to smile.
-                                            
-                        You died. Noob
-                        """);
-                TextUI.getInput("Press Enter to continue...");
-
-                TextUI.displayMessage();
-                TextUI.displayRiddle("*** Maybe she's more friendly when she's warm ***");
-
+                isComplete = true;
                 exit();
-            } else if (input == options.indexOf("Give her the blanket")) {
+                break;
+            } else if (choice == options.indexOf("Get hint")) {
+                penaltyTime += HINT_PENALTY_TIME;
+
                 TextUI.displayMessage();
                 TextUI.displayMessage("""
-                        You nervously wrap the blanket around the little girl.
-                        She stops shivering and begins speaking to you.
+                        The girl looks cold. Maybe you could find something to help her stay warm?
                         """);
                 TextUI.getInput("Press Enter to continue...");
-
-                TextUI.displayMessage();
-                girlRiddle(true);
-
-                if (girlRiddleSolved) {
-                    TextUI.displayRiddle("The girl stops smiling at you, she looks normal now.");
-                    TextUI.displayRiddle("She moves away form the door");
-                    TextUI.getInput("Press Enter to continue...");
-
-                    TextUI.displayMessage();
-                    TextUI.displayMessage("""
-                            You open the door and can now leave to the next room.
-                            """);
-
-                    isComplete = true;
-                    exit();
-                }
             }
         }
     }
 
-    private void girlRiddle(boolean firstTime) {
-        TextUI.displayRiddle("*What has keys, but can't open anything?*");
-        int choice = 0;
+    private void approachGirlDeath() {
+        TextUI.displayMessage();
 
-        if (firstTime) {
-            List<String> options = new ArrayList<>();
-            options.add("Try to guess the riddle");
-            options.add("Take a step back");
-
-            TextUI.displayMessage();
-            choice = TextUI.getChoice("What do you want to do?", options);
+        if (!candleLit) {
+            TextUI.displayMessage("It's too dark to see so you attempt to get closer.");
         }
 
-        if (choice == 0) {
+        TextUI.displayMessage("""
+                Suddenly she begins to cry. Louder and louder, meanwhile the smell of blood is getting worse.
+                You're now about 3 steps away from the girl when...
+                """);
+        TextUI.getInput("Press Enter to continue...");
+
+        TextUI.displayMessage();
+        TextUI.displayErrorMessage("""
+                She jumps on you with a knife, slicing your throat, all while smiling at you.
+                As your lifeless body falls to the ground, the little girl continues to smile.
+                                    
+                You died. Noob
+                """);
+        TextUI.getInput("Press Enter to continue...");
+
+        if (!candleLit) {
             TextUI.displayMessage();
-            String answer = TextUI.getInput("Your guess:").trim();
+            TextUI.displayRiddle("*** Maybe a little light could've helped you in the darkness ***");
+        } else {
+            TextUI.displayMessage();
+            TextUI.displayRiddle("*** Maybe she's more friendly when she's warm ***");
+        }
 
-            if (answer.equalsIgnoreCase("Piano")) {
-                girlRiddleSolved = true;
-            } else {
-                TextUI.displayMessage("""
-                        You say the word out loud but nothing happened.
-                        The little girl is just looking at you, not moving, just smiling.
-                        """);
+        exit();
+    }
 
-                List<String> options = new ArrayList<>();
-                options.add("Try again");
-                options.add("Take a step back");
+    private void girlRiddle() {
+        List<String> options = new ArrayList<>();
+        boolean riddleSolved = false;
+        boolean tryAgain = false;
+        int choice;
+
+        options.add("Try to guess the riddle");
+        options.add("Get hint");
+
+        while (!riddleSolved) {
+            if (!tryAgain) {
+                TextUI.displayRiddle("*What has keys, but can't open anything?*");
+
+                options.set(0, "Try to guess the riddle");
 
                 TextUI.displayMessage();
-                choice = TextUI.getChoice("What do you want to do?", options);
+                choice = TextUI.getChoice("Wat do you want to do?", options);
+            } else {
+                options.set(0, "Try again");
+
+                choice = TextUI.getChoice("Wat do you want to do?", options);
 
                 if (choice == 0) {
-                    girlRiddle(false);
+                    TextUI.displayMessage();
+                    TextUI.displayRiddle("*What has keys, but can't open anything?*");
                 }
+            }
+
+            if (choice == 0) {
+                TextUI.displayMessage();
+                String answer = TextUI.getInput("Your guess:").trim();
+
+                if (answer.equalsIgnoreCase("Piano")) {
+                    riddleSolved = true;
+                } else {
+                    TextUI.displayMessage();
+                    TextUI.displayMessage("""
+                            You say the word out loud but nothing happened.
+                            """);
+
+                    tryAgain = true;
+                }
+            } else if (choice == options.indexOf("Get hint")) {
+                penaltyTime += HINT_PENALTY_TIME;
+
+                TextUI.displayMessage();
+                TextUI.displayMessage("""
+                        Keys? It reminds you of music but you're not quite sure why.
+                        """);
+                TextUI.getInput("Press Enter to continue...");
+                TextUI.displayMessage();
+
+                tryAgain = false;
             }
         }
     }
