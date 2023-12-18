@@ -1,3 +1,5 @@
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,18 +28,27 @@ public class Game {
         TextUI.displayMessage("Welcome to The Haunted Mansion - Escape Room");
 
         List<String> options = new ArrayList<>();
+        int choice = 0;
+
         options.add("New Game");
+        options.add("Display top times");
         options.add("Quit");
 
-        int choice = TextUI.getChoice("What would you like to do?", options);
+        while (choice != options.indexOf("Quit")) {
+            TextUI.displayMessage();
+            choice = TextUI.getChoice("What would you like to do?", options);
 
-        switch (choice) {
-            case 0:
-                newGame();
-                break;
-            case 1:
-                quit();
-                break;
+            switch (choice) {
+                case 0:
+                    newGame();
+                    return;
+                case 1:
+                    displayScores(loadScoreData());
+                    break;
+                case 2:
+                    quit();
+                    return;
+            }
         }
     }
 
@@ -67,7 +78,7 @@ public class Game {
 
         if (playerName.equalsIgnoreCase("Sander er gud")) {
             TextUI.displaySuccesMessage("Congratulations!!! You have cleared the Game!");
-            runGameLoop();
+            quit();
             return;
         }
 
@@ -82,18 +93,14 @@ public class Game {
     }
 
     public void quit() {
+        running = false;
+
         TextUI.displayMessage();
         TextUI.displayMessage("Quitting...");
-        running = false;
     }
 
     public void runGameLoop() {
         int count = 0;
-
-        if (player.getName().equalsIgnoreCase("Sander er gud")) {
-            running = false;
-            return;
-        }
 
         while (running) {
             Room currentRoom = rooms.get(count);
@@ -130,29 +137,63 @@ public class Game {
                 TextUI.displayMessage();
                 TextUI.displayMessage("You've completed The Haunted Mansion - Escape Room.");
                 TextUI.displayMessage("Congratulations!");
+                TextUI.displayMessage();
                 TextUI.displayMessage("Your final total time is: " + convertSecondsToTime((int) player.getTimeScore() / 1000));
 
-                List<Player> players = new ArrayList<>();
+                List<Player> players = loadScoreData();
                 players.add(player);
-                List<String> scoreData = FileIO.readScoreData("data/scoreData");
 
-                if (!scoreData.isEmpty()) {
-                    for (String s : scoreData) {
-                        String[] row = s.split(",");
+                Collections.sort(players);
 
-                        String name = row[0].trim();
-                        long timeScore = Long.parseLong(row[1].trim());
-
-                        Player p = new Player(name);
-                        p.setTimeScore(timeScore);
-
-                        players.add(p);
-                    }
+                while (players.size() > 5) {
+                    players.removeLast();
                 }
+
+                displayScores(players);
+
                 FileIO.saveScoreData("data/scoreData", players);
             }
             quit();
         }
+    }
+
+    private void displayScores(List<Player> players) {
+        int count = 1;
+
+        TextUI.displayMessage();
+        TextUI.displayMessage("Top times:");
+
+        for (Player player : players) {
+            TextUI.displayMessage(String.format("%d: %-10s Time %s", count, player.getName(), convertSecondsToTime((int) player.getTimeScore() / 1000)));
+            count++;
+        }
+
+        TextUI.getInput("Press Enter to continue...");
+    }
+
+    private List<Player> loadScoreData() {
+        List<String> scoreData = FileIO.readScoreData("data/scoreData");
+        List<Player> players = new LinkedList<>();
+
+        if (!scoreData.isEmpty()) {
+            for (String s : scoreData) {
+                if (!s.trim().isEmpty()) {
+                    String[] row = s.split(",");
+
+                    String name = row[0].trim();
+                    long timeScore = Long.parseLong(row[1].trim());
+
+                    Player p = new Player(name);
+                    p.setTimeScore(timeScore);
+
+                    players.add(p);
+                }
+            }
+        }
+
+        Collections.sort(players);
+
+        return players;
     }
 
     /**
