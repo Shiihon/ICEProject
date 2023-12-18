@@ -115,7 +115,6 @@ public class StartRoom extends ARoom {
             options.add("Light the candle.");
             options.add("Exit");
 
-            TextUI.displayMessage();
             int choice = TextUI.getChoice("What would you like to do?", options);
 
             TextUI.displayMessage();
